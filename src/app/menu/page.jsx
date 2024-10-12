@@ -24,7 +24,7 @@ function MenuPage() {
           </button>
         </Link>
         
-        <Link href="">
+        <Link href="report_issue">
           <button
             type="submit"
             className="w-60 text-white text-lg bg-[#5ABCF5] py-3 my-2 rounded-md hover:bg-[#5a90f5]"

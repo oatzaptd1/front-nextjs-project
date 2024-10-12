@@ -73,6 +73,11 @@ function Sidebar() {
           <hr className="my-2 text-gray-600" />
         </div>
 
+        <div className="ml-4 mt-5 text-start">
+          <p>ชื่อ : AAA BBB</p>
+          <p>สาขา : ลาดพร้าว 87</p>
+        </div>
+
         <div onClick={logout}>
           <div className="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white">
             <svg

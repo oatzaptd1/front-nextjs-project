@@ -15,7 +15,7 @@ function InputPage() {
 
   const handleInputChange = (event) => {
     const value = event.target.value;
-    // ตรวจสอบว่ามีเฉพาะตัวเลขและไม่เกิน 13 หลัก
+    // มีเฉพาะตัวเลขไม่เกิน13หลัก
     if (/^\d{0,13}$/.test(value)) {
       setProductCode(value);
     }

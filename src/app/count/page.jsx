@@ -6,10 +6,12 @@ function CountPage() {
   return (
     <div>
       <Navbar />
-      <div className="flex justify-center items-center mt-8">
+      <div className="flex flex-col justify-center items-center mt-8 ">
+        <img src="/images/dectol.png" alt="my image" />
+        <h1 >Dettol</h1>
         <input
           type="text"
-          className="flex w-60 bg-gray-300 p-3 my-2 rounded-md"
+          className="flex w-60 border border-gray-500 p-3 my-2 rounded-md mb-4"
         />
         <div>
         <Link href="/">
