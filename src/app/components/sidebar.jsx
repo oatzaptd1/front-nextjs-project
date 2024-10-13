@@ -1,7 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import AuthService from "../service/auth.service";
 
 function Sidebar() {
   const [isOpen, setIsOpen] = useState(false); // สร้าง state สำหรับเปิด/ปิด Sidebar
@@ -12,9 +13,33 @@ function Sidebar() {
 
   const router = useRouter();
 
-  const logout = () => {
-    router.push("/login");
+  const logout = async () => {
+    try {
+      await AuthService.logout();
+      console.log("logout");
+
+      router.push("/login");
+    } catch (error) {
+      setError("Invalid username or password");
+    }
   };
+  const [userData, setUserData] = useState({
+    firstName: "",
+    lastName: "",
+    siteName: "",
+  });
+
+  useEffect(() => {
+    const storedFirstName = localStorage.getItem("firstname");
+    const storedLastName = localStorage.getItem("lastname");
+    const storedSiteName = localStorage.getItem("site_name");
+
+    setUserData({
+      firstName: storedFirstName || "",
+      lastName: storedLastName || "",
+      siteName: storedSiteName || "",
+    });
+  }, []);
 
   return (
     <div>
@@ -27,11 +52,11 @@ function Sidebar() {
           width="50"
           height="50"
           fill="currentColor"
-          class="bi bi-list px-2 rounded-md"
+          className="bi bi-list px-2 rounded-md"
           viewBox="0 0 16 16"
         >
           <path
-            fill-rule="evenodd"
+            fillRule="evenodd"
             d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"
           />
         </svg>
@@ -48,12 +73,12 @@ function Sidebar() {
               width="40"
               height="40"
               fill="currentColor"
-              class="bi bi-person-circle rounded-md items-center"
+              className="bi bi-person-circle rounded-md items-center"
               viewBox="0 0 16 16"
             >
               <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
               <path
-                fill-rule="evenodd"
+                fillRule="evenodd"
                 d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"
               />
             </svg>
@@ -63,7 +88,7 @@ function Sidebar() {
               width="16"
               height="16"
               fill="currentColor"
-              class="bi bi-x-lg ml-auto cursor-pointer"
+              className="bi bi-x-lg ml-auto cursor-pointer"
               viewBox="0 0 16 16"
               onClick={toggleSidebar}
             >
@@ -74,8 +99,10 @@ function Sidebar() {
         </div>
 
         <div className="ml-4 mt-5 text-start">
-          <p>ชื่อ : AAA BBB</p>
-          <p>สาขา : ลาดพร้าว 87</p>
+          <p>
+            ชื่อ : {userData.firstName} {userData.lastName}
+          </p>
+          <p>สาขา : {userData.siteName}</p>
         </div>
 
         <div onClick={logout}>
@@ -85,15 +112,15 @@ function Sidebar() {
               width="30"
               height="30"
               fill="currentColor"
-              class="bi bi-box-arrow-right"
+              className="bi bi-box-arrow-right"
               viewBox="0 0 16 16"
             >
               <path
-                fill-rule="evenodd"
+                fillRule="evenodd"
                 d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z"
               />
               <path
-                fill-rule="evenodd"
+                fillRule="evenodd"
                 d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"
               />
             </svg>
