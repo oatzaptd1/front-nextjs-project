@@ -1,8 +1,20 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import Navbar from "../components/navbar";
 import Link from "next/link";
 
 function CountPage() {
+  const [qty, setQty] = useState("");
+
+  const handleInput = (e) => {
+    const value = e.target.value;
+
+    if (/^\d{0,4}$/.test(value)) {
+      setQty(value);
+    }
+  };
+
   return (
     <div>
       <Navbar />
@@ -10,11 +22,14 @@ function CountPage() {
         <img src="/images/dectol.png" alt="my image" />
         <h1 >Dettol</h1>
         <input
-          type="text"
-          className="flex w-60 border border-gray-500 p-3 my-2 rounded-md mb-4"
+          type="number"
+          value={qty}
+          onChange={handleInput}
+          maxLength={4}
+          className="flex w-60 border border-gray-500 text-center p-3 my-2 rounded-md mb-4"
         />
         <div>
-        <Link href="/">
+        <Link href="/count_history">
           <button
             type="submit"
             className="w-60 bg-[#5ABCF5] text-white py-3  rounded-md hover:bg-[#5a90f5]"
