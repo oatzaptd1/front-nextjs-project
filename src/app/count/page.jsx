@@ -20,7 +20,7 @@ function CountPage() {
       <Navbar />
       <div className="flex flex-col justify-center items-center mt-8 ">
         <img src="/images/dectol.png" alt="my image" />
-        <h1 >Dettol</h1>
+        <h1>Dettol</h1>
         <input
           type="number"
           value={qty}
