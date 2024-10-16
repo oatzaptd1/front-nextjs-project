@@ -80,7 +80,7 @@ const CountItemPage = ({ params, searchParams }) => {
 
   return (
     <div>
-      <Navbar page = "/amount"/>
+      <Navbar page = "/amount" title = "นับสินค้า"/>
       <div className="flex flex-col justify-center items-center mt-8 ">
         <div className="flex flex-col justify-center items-center mt-8">
           <div className="flex items-center space-x-4">

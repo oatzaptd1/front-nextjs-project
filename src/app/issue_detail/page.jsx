@@ -30,7 +30,7 @@ function IssueDetailPage() {
         title: "แจ้งเตือน",
         text: "กรุณากดปุ่มยืนยันเพื่อยกเลิก",
         confirmButtonText: "ยืนยัน",
-        confirmButtonColor: "#3085d6",     
+        confirmButtonColor: "#3085d6",
       });
     } catch (error) {
       console.error("Error", error);
@@ -39,7 +39,7 @@ function IssueDetailPage() {
 
   return (
     <div>
-      <Navbar page = "all_issue" title = "แจ้งปัญหา"/>
+      <Navbar page="all_issue" title="แจ้งปัญหา" />
       <div className="mt-8 text-center">
         <h2>รายละเอียดการแจ้งปัญหา</h2>
       </div>

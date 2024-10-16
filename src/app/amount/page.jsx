@@ -3,9 +3,9 @@
 import React, { use, useState, useEffect } from "react";
 import Navbar from "../components/navbar";
 import Navigation from "../components/navigation";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { getShelfProducts, getItemByShelf } from "../service/api.service";
+import QrBarcodeScanner from "react-qr-barcode-scanner";
 
 function InputPage() {
   const router = useRouter();
@@ -13,6 +13,7 @@ function InputPage() {
   const [shelfProducts, setShelfProducts] = useState([]);
   const [productCode, setProductCode] = useState("");
   const [product, setProduct] = useState([]);
+  const [isScanning, setIsScanning] = useState(false);
 
   const handleChange = async (event) => {
     const selectedShelf = event.target.value;
@@ -61,10 +62,20 @@ function InputPage() {
     router.push(`/count/${item.item_id}?shelf=${selectedOption}`);
   };
 
+  // barcode scan
+  const handleScan = (data) => {
+    setProductCode(data);
+    setIsScanning(false);
+  };
+
+  const handleError = (err) => {
+    console.error(err);
+    setIsScanning(false);
+  };
 
   return (
     <div>
-      <Navbar page = "/menu" title ="นับสินค้า"/> 
+      <Navbar page="/menu" title="นับสินค้า" />
       <div className="flex flex-col items-center justify-center">
         <div className="w-90 mt-10">
           <form action="">
@@ -85,24 +96,42 @@ function InputPage() {
               )}
             </select>
 
-            <input
-              className="w-full p-2 border border-gray-300 my-3 rounded-lg text-lg focus:border-blue-500"
-              type="text"
-              placeholder="กรุณาใส่รหัสสินค้า"
-              value={productCode}
-              onChange={handleInputChange}
-              maxLength={13} // จำกัดความยาวสูงสุด
-            />
+            <div className="relative">
+              <input
+                className="w-full p-2 border border-gray-300 my-3 rounded-lg text-lg focus:border-blue-500"
+                type="text"
+                placeholder="กรุณาใส่รหัสสินค้า"
+                value={productCode}
+                onChange={handleInputChange}
+                maxLength={13}
+              />
+
+              <button
+                type="button"
+                onClick={() => setIsScanning(true)} // เริ่มการสแกนเมื่อคลิกที่ไอคอน
+                className="absolute right-2 top-1/2 transform -translate-y-1/2"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  class="bi bi-upc-scan"
+                  viewBox="0 0 16 16"
+                >
+                  <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5M.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5m15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0z" />
+                </svg>
+              </button>
+            </div>
 
             {/* <Link href="/count"> */}
-              <button
-                type="submit"
-                onClick={() => handleRowClick(productCode)}
-
-                className="w-full bg-[#5ABCF5] text-white py-3  rounded-md hover:bg-[#5a90f5]"
-              >
-                ยืนยัน
-              </button>
+            <button
+              type="submit"
+              onClick={() => handleRowClick(productCode)}
+              className="w-full bg-[#5ABCF5] text-white py-3  rounded-md hover:bg-[#5a90f5]"
+            >
+              ยืนยัน
+            </button>
             {/* </Link> */}
 
             <div className="relative">
@@ -149,9 +178,28 @@ function InputPage() {
               </div>
             </div>
           </form>
+
+          {isScanning && (
+            <QrBarcodeScanner
+              onUpdate={(err, result) => {
+                if (result) {
+                  handleScan(result.text); // ใช้ข้อมูลที่สแกน
+                } else if (err) {
+                  handleError(err);
+                }
+              }}
+              style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0, zIndex: 9999 }} // ใช้ zIndex เพื่อให้กล้องอยู่ด้านหน้า
+            />
+          )}
+
         </div>
       </div>
-      <Navigation navi1 = "นับสินค้า" navi2 = "ประวัติการนับ" page1 ="/amount" page2 ="/count_history"/>
+      <Navigation
+        navi1="นับสินค้า"
+        navi2="ประวัติการนับ"
+        page1="/amount"
+        page2="/count_history"
+      />
     </div>
   );
 }
