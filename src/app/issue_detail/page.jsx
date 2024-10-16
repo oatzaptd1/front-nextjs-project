@@ -1,22 +1,45 @@
+"use client";
+
 import React from "react";
-import ProblemNavbar from "../components/problem/Pnavbar";
 import Link from "next/link";
 import Swal from "sweetalert2";
+import Navbar from "../components/navbar";
 
 function IssueDetailPage() {
   const handleConfirm = (async) => {
     try {
       Swal.fire({
-        icon: "error", // ประเภทของ alert
+        icon: "question", // ประเภทของ alert
         title: "แจ้งเตือน", // หัวข้อของ error
-        text: "อยู่นอกเวลาทำการนับสินค้า", // ข้อความใน error
+        text: "กรุณากดปุ่มยืนยันเพื่อจบงาน", // ข้อความใน error
+        showCancelButton: true, // แสดงปุ่มยกเลิก
+        confirmButtonText: "จบงาน", // ข้อความบนปุ่มยืนยัน
+        cancelButtonText: "ยกเลิก", // ข้อความบนปุ่มยกเลิก
+        confirmButtonColor: "#3085d6", // สีของปุ่มยืนยัน
+        cancelButtonColor: "#d33", // สีของปุ่มยกเลิก
       });
-    } catch (error) {}
+    } catch (error) {
+      console.error("Error", error);
+    }
+  };
+
+  const handleCancel = (async) => {
+    try {
+      Swal.fire({
+        icon: "question",
+        title: "แจ้งเตือน",
+        text: "กรุณากดปุ่มยืนยันเพื่อยกเลิก",
+        confirmButtonText: "ยืนยัน",
+        confirmButtonColor: "#3085d6",     
+      });
+    } catch (error) {
+      console.error("Error", error);
+    }
   };
 
   return (
     <div>
-      <ProblemNavbar />
+      <Navbar page = "all_issue" title = "แจ้งปัญหา"/>
       <div className="mt-8 text-center">
         <h2>รายละเอียดการแจ้งปัญหา</h2>
       </div>
@@ -34,6 +57,7 @@ function IssueDetailPage() {
         {/* <Link href=""> */}
         <button
           type="submit"
+          onClick={handleConfirm}
           className="w-full bg-[#5ABCF5] text-white mt-4 py-2 rounded-md hover:bg-[#5a90f5]"
         >
           จบงาน
@@ -42,8 +66,8 @@ function IssueDetailPage() {
         <Link href="">
           <button
             type="submit"
-            // onClick={handleConfirm}
-            className="w-full bg-red-600 text-white mt-4 py-2 rounded-md hover:bg-[#5a90f5]"
+            onClick={handleCancel}
+            className="w-full bg-red-600 text-white mt-4 py-2 rounded-md hover:bg-red-800"
           >
             ยกเลิกงาน
           </button>

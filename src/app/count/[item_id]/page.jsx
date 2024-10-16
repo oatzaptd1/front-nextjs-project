@@ -3,14 +3,16 @@
 import { use, useEffect, useState } from "react";
 import Navbar from "../../components/navbar";
 import { useRouter } from "next/navigation";
-import { getItemDetail ,countProduct} from "../../service/api.service";
-const CountItemPage = ({ params ,searchParams}) => {
+import { getItemDetail, countProduct } from "../../service/api.service";
+import Swal from "sweetalert2";
+
+const CountItemPage = ({ params, searchParams }) => {
   const router = useRouter();
   const [productDetail, setProductDetail] = useState([]);
   const [itemQty, setItemQty] = useState("");
-  const { item_id } = params; 
-  const shelf = searchParams?.shelf; 
-  
+  const { item_id } = params;
+  const shelf = searchParams?.shelf;
+
   useEffect(() => {
     const fetchProductDetail = async () => {
       if (typeof window !== "undefined") {
@@ -44,25 +46,41 @@ const CountItemPage = ({ params ,searchParams}) => {
       site_id: localStorage.getItem("site_id"),
       firstname: localStorage.getItem("firstname"),
       lastname: localStorage.getItem("lastname"),
-      item_qty: Number(itemQty), 
+      item_qty: Number(itemQty),
       item_position: shelf,
     };
-    
+
     try {
-      const res = await countProduct(body); 
+      const res = await countProduct(body);
       console.log("countProduct response", res);
       if (res && res.res_code === "000") {
-        alert("Success");
+        // alert("Success");
+        Swal.fire({
+          icon: "success",
+          title: "สำเร็จ",
+          text: "สินค้าได้ถูกนับแล้ว",
+        });
         router.push("/amount");
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "ไม่สำเร็จ",
+          text: "เกิดข้อผิดพลาดในการนับสินค้า กรุณาลองอีกครั้ง",
+        });
       }
     } catch (error) {
       console.error("Error submitting countProduct", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error 500",
+        text: "เกิดข้อผิดพลาด",
+      });
     }
   };
 
   return (
     <div>
-      <Navbar />
+      <Navbar page = "/amount"/>
       <div className="flex flex-col justify-center items-center mt-8 ">
         <div className="flex flex-col justify-center items-center mt-8">
           <div className="flex items-center space-x-4">
@@ -99,13 +117,13 @@ const CountItemPage = ({ params ,searchParams}) => {
         />
 
         <div>
-            <button
-              type="submit"
-              className="w-60 bg-[#5ABCF5] text-white py-3 rounded-md hover:bg-[#5a90f5]"
-              onClick={countItemProduct}
-            >
-              ยืนยัน
-            </button>
+          <button
+            type="submit"
+            className="w-60 bg-[#5ABCF5] text-white py-3 rounded-md hover:bg-[#5a90f5]"
+            onClick={countItemProduct}
+          >
+            ยืนยัน
+          </button>
         </div>
       </div>
     </div>

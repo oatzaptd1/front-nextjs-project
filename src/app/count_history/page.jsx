@@ -61,7 +61,7 @@ function CountHistoryPage() {
 
   return (
     <div>
-      <Navbar />
+      <Navbar page = "/menu" title = "นับสินค้า"/>
       <div className="flex flex-col justify-center items-center mt-8 space-y-6">
         <h2 className="font-bold text-xl">ประวัติการนับสินค้า</h2>
         <p className="text-lg">
@@ -69,7 +69,7 @@ function CountHistoryPage() {
         </p>
         <p className="text-lg">{formattedRound}</p>
 
-        <div className="w-64 mt-4">
+        <div className="w-70 mt-4">
           <select
             value={selectedOption}
             onChange={handleChange}
@@ -118,7 +118,7 @@ function CountHistoryPage() {
         </div>
       </div>
 
-      <Navigation />
+      <Navigation navi1 = "นับสินค้า" navi2 = "ประวัติการนับ" page1 = "/amount" page2 = "/count_history"/>
     </div>
   );
 }

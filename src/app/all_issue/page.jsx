@@ -1,12 +1,12 @@
 import React from "react";
-import ProblemNavbar from "../components/problem/Pnavbar";
-import ProblemNavigation from "../components/problem/Pnavigation";
 import Link from "next/link";
+import Navbar from "../components/navbar";
+import Navigation from "../components/navigation";
 
 function AllIssuePage() {
   return (
     <div className="relative min-h-screen">
-      <ProblemNavbar />
+      <Navbar page = "/menu" title = "แจ้งปัญหา"/>
       <div className="mx-auto mt-8 py-4 p-4 bg-gray-300 items-start rounded-md w-64">
         <p>เรื่อง: จอ Monitor เสีย</p>
         <p>อุปกรณ์: จอ Monitor</p>
@@ -43,7 +43,7 @@ function AllIssuePage() {
           </div>
         </Link>
       </div>
-      <ProblemNavigation />
+      <Navigation navi1 = "แจ้งปัญหา" navi2 = "ประวัติการแจ้งปัญหา" page1 = "/all_issue" page2 = ""/> 
     </div>
   );
 }

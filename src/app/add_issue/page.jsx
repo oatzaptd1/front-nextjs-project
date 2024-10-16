@@ -1,9 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import ProblemNavbar from "../components/problem/Pnavbar";
-import ProblemNavigation from "../components/problem/Pnavigation";
 import Link from "next/link";
+import Navbar from "../components/navbar";
 
 function AddIssuePage() {
   const [selectedType, setSelectedType] = useState("");
@@ -27,7 +26,7 @@ function AddIssuePage() {
 
   return (
     <div>
-      <ProblemNavbar />
+      <Navbar page = "all_issue" title = "แจ้งปัญหา"/>
       <div className="mx-auto mt-8 py-4 p-4 bg-gray-300 rounded-md text-center w-64">
         <form action="">
           <div className="flex items-center space-x-2">
@@ -94,7 +93,6 @@ function AddIssuePage() {
           </Link>
         </form>
       </div>
-      <ProblemNavigation />
     </div>
   );
 }

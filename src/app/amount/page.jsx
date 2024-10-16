@@ -61,11 +61,12 @@ function InputPage() {
     router.push(`/count/${item.item_id}?shelf=${selectedOption}`);
   };
 
+
   return (
     <div>
-      <Navbar />
+      <Navbar page = "/menu" title ="นับสินค้า"/> 
       <div className="flex flex-col items-center justify-center">
-        <div className="w-64 mt-10">
+        <div className="w-90 mt-10">
           <form action="">
             <select
               value={selectedOption}
@@ -93,14 +94,16 @@ function InputPage() {
               maxLength={13} // จำกัดความยาวสูงสุด
             />
 
-            <Link href="/count">
+            {/* <Link href="/count"> */}
               <button
                 type="submit"
+                onClick={() => handleRowClick(productCode)}
+
                 className="w-full bg-[#5ABCF5] text-white py-3  rounded-md hover:bg-[#5a90f5]"
               >
                 ยืนยัน
               </button>
-            </Link>
+            {/* </Link> */}
 
             <div className="relative">
               <div className="overflow-y-auto max-h-80 rounded-lg mt-3">
@@ -148,7 +151,7 @@ function InputPage() {
           </form>
         </div>
       </div>
-      <Navigation />
+      <Navigation navi1 = "นับสินค้า" navi2 = "ประวัติการนับ" page1 ="/amount" page2 ="/count_history"/>
     </div>
   );
 }
