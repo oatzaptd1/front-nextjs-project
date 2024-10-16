@@ -31,8 +31,8 @@ function InputPage() {
   useEffect(() => {
     const storedShelf = localStorage.getItem("shelf");
     if (storedShelf) {
-      setSelectedOption(storedShelf); 
-      handleChange({ target: { value: storedShelf } }); 
+      setSelectedOption(storedShelf);
+      handleChange({ target: { value: storedShelf } });
     }
   }, []);
 
@@ -93,8 +93,17 @@ function InputPage() {
               maxLength={13} // จำกัดความยาวสูงสุด
             />
 
+            <Link href="/count">
+              <button
+                type="submit"
+                className="w-full bg-[#5ABCF5] text-white py-3  rounded-md hover:bg-[#5a90f5]"
+              >
+                ยืนยัน
+              </button>
+            </Link>
+
             <div className="relative">
-              <div className="overflow-y-auto max-h-80 rounded-lg">
+              <div className="overflow-y-auto max-h-80 rounded-lg mt-3">
                 <table className="w-full border-collapse text-center">
                   <thead className="bg-gray-200 sticky top-0">
                     <tr>
@@ -104,36 +113,38 @@ function InputPage() {
                     </tr>
                   </thead>
                   <tbody>
-                    {product.map((item, index) => (
-                      <tr
-                        key={index}
-                        className="hover:bg-gray-100"
-                        onClick={() => handleRowClick(item)}
-                      >
-                        <td className="p-2 border-b border-gray-300">
-                          {index + 1}
-                        </td>
-                        <td className="p-2 border-b border-gray-300">
-                          {item.item_id}
-                        </td>
-                        <td className="p-2 border-b border-gray-300">
-                          {item.item_desc1}
+                    {product.length > 0 ? (
+                      product.map((item, index) => (
+                        <tr
+                          key={index}
+                          className="hover:bg-gray-100"
+                          onClick={() => handleRowClick(item)}
+                        >
+                          <td className="p-2 border-b border-gray-300">
+                            {index + 1}
+                          </td>
+                          <td className="p-2 border-b border-gray-300">
+                            {item.item_id}
+                          </td>
+                          <td className="p-2 border-b border-gray-300">
+                            {item.item_desc1}
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td
+                          colSpan="3"
+                          className="p-2 border-b border-gray-300"
+                        >
+                          ไม่มีข้อมูลสินค้า
                         </td>
                       </tr>
-                    ))}
+                    )}
                   </tbody>
                 </table>
               </div>
             </div>
-
-            <Link href="/count">
-              <button
-                type="submit"
-                className="w-full bg-[#5ABCF5] text-white py-3  rounded-md hover:bg-[#5a90f5]"
-              >
-                ยืนยัน
-              </button>
-            </Link>
           </form>
         </div>
       </div>

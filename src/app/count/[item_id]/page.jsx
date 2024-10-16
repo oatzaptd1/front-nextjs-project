@@ -7,7 +7,7 @@ import { getItemDetail ,countProduct} from "../../service/api.service";
 const CountItemPage = ({ params ,searchParams}) => {
   const router = useRouter();
   const [productDetail, setProductDetail] = useState([]);
-  const [itemQty, setItemQty] = useState(0);
+  const [itemQty, setItemQty] = useState("");
   const { item_id } = params; 
   const shelf = searchParams?.shelf; 
   
@@ -85,9 +85,17 @@ const CountItemPage = ({ params ,searchParams}) => {
 
         <input
           type="text"
-          className="flex w-60 border border-gray-500 p-3 my-2 rounded-md mb-4"
+          className="flex w-60 border border-gray-500 p-3 my-2 rounded-md mb-4 text-center"
           value={itemQty}
-          onChange={(e) => setItemQty(e.target.value)}
+          // onChange={(e) => setItemQty(e.target.value)}
+          onChange={(e) => {
+            const value = e.target.value;
+            if (value.length <= 4 && /^\d*$/.test(value)) {
+              setItemQty(value);
+            }
+          }}
+          maxLength={4}
+          placeholder="กรุณาใส่จำนวน"
         />
 
         <div>

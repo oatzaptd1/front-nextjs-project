@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Sidebar from "../components/sidebar";
+import Swal from "sweetalert2";
 
 import { checkInspectionRound } from "../service/api.service";
 function MenuPage() {
@@ -14,7 +15,12 @@ function MenuPage() {
       console.log("checkInspectionRound", result);
       if (result.res_code === "000") {
         router.push("/amount");
-      } else if (result.res_code === "E101") {
+      } else if (result.res_code === "E110") {
+        Swal.fire({
+          icon: 'error',   // ประเภทของ alert
+          title: 'แจ้งเตือน',  // หัวข้อของ error
+          text: 'อยู่นอกเวลาทำการนับสินค้า',  // ข้อความใน error
+        });
       }
     } catch (error) {
       setError(error);
@@ -41,7 +47,7 @@ function MenuPage() {
           นับสินค้า
         </button>
 
-        <Link href="report_issue">
+        <Link href="all_issue">
           <button
             type="submit"
             className="w-60 text-white text-lg bg-[#5ABCF5] py-3 my-2 rounded-md hover:bg-[#5a90f5]"
