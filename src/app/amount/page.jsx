@@ -61,6 +61,16 @@ function InputPage() {
     router.push(`/count/${item.item_id}?shelf=${selectedOption}`);
   };
 
+  const onSubmit = (event) => {
+    event.preventDefault();
+    if (productCode && selectedOption) {
+      const item_id = productCode
+      router.push(`/count/${item_id}?shelf=${selectedOption}&barcode=${productCode}`);
+    } else {
+      alert("กรุณาเลือกชั้นวางและใส่รหัสสินค้า");
+    }
+  };
+
   return (
     <div>
       <Navbar />
@@ -89,6 +99,7 @@ function InputPage() {
               type="text"
               placeholder="กรุณาใส่รหัสสินค้า"
               value={productCode}
+              id="productCode"
               onChange={handleInputChange}
               maxLength={13} // จำกัดความยาวสูงสุด
             />
@@ -125,15 +136,13 @@ function InputPage() {
                 </table>
               </div>
             </div>
-
-            <Link href="/count">
               <button
                 type="submit"
                 className="w-full bg-[#5ABCF5] text-white py-3  rounded-md hover:bg-[#5a90f5]"
+                onClick={onSubmit}
               >
                 ยืนยัน
               </button>
-            </Link>
           </form>
         </div>
       </div>

@@ -10,33 +10,39 @@ const CountItemPage = ({ params ,searchParams}) => {
   const [itemQty, setItemQty] = useState(0);
   const { item_id } = params; 
   const shelf = searchParams?.shelf; 
+  const barcode = searchParams?.barcode; 
+  console.log("barcode",searchParams);
   
   useEffect(() => {
-    const fetchProductDetail = async () => {
-      if (typeof window !== "undefined") {
-        const site_id = localStorage.getItem("site_id");
-        console.log("item_id", item_id);
-
-        const body = {
-          item_id: item_id,
-          site_id: site_id,
-          item_barcode: "",
-        };
-
-        try {
-          const res = await getItemDetail(body);
-          if (res && res.data) {
-            setProductDetail(res.data);
-            console.log("getItemDetail", res.data);
-          }
-        } catch (error) {
-          console.error("Error fetching item details:", error);
-        }
-      }
-    };
-
     fetchProductDetail();
-  }, [params]);
+  }, [params, item_id]);
+
+  const fetchProductDetail = async () => {
+    if (typeof window !== "undefined") {
+      const site_id = localStorage.getItem("site_id");
+      const isBarcode = barcode || ""  ; // Example condition for barcode
+      const body = {
+        item_id: isBarcode ? "" : item_id,
+        site_id: site_id,
+        item_barcode: isBarcode ? item_id : "",
+      };
+
+      try {
+        const res = await getItemDetail(body);
+        if (res.res_code === "E101") {
+          alert(res.res_msg);
+          router.push("/amount");
+        }
+        if (res && res.data) {
+          setProductDetail(res.data);
+          console.log("getItemDetail", res.data);
+        }
+      } catch (error) {
+        console.error("Error fetching item details:", error);
+      }
+    }
+  };
+  
 
   const countItemProduct = async () => {
     const body = {
