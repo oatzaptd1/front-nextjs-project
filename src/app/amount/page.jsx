@@ -62,15 +62,14 @@ function InputPage() {
     router.push(`/count/${item.item_id}?shelf=${selectedOption}`);
   };
 
-  // barcode scan
-  const handleScan = (data) => {
-    setProductCode(data);
-    setIsScanning(false);
-  };
-
-  const handleError = (err) => {
-    console.error(err);
-    setIsScanning(false);
+  const onSubmit = (event) => {
+    event.preventDefault();
+    if (productCode && selectedOption) {
+      const item_id = productCode
+      router.push(`/count/${item_id}?shelf=${selectedOption}&barcode=${productCode}`);
+    } else {
+      alert("กรุณาเลือกชั้นวางและใส่รหัสสินค้า");
+    }
   };
 
   return (
@@ -96,43 +95,15 @@ function InputPage() {
               )}
             </select>
 
-            <div className="relative">
-              <input
-                className="w-full p-2 border border-gray-300 my-3 rounded-lg text-lg focus:border-blue-500"
-                type="text"
-                placeholder="กรุณาใส่รหัสสินค้า"
-                value={productCode}
-                onChange={handleInputChange}
-                maxLength={13}
-              />
-
-              <button
-                type="button"
-                onClick={() => setIsScanning(true)} // เริ่มการสแกนเมื่อคลิกที่ไอคอน
-                className="absolute right-2 top-1/2 transform -translate-y-1/2"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  fill="currentColor"
-                  class="bi bi-upc-scan"
-                  viewBox="0 0 16 16"
-                >
-                  <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5M.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5m15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0z" />
-                </svg>
-              </button>
-            </div>
-
-            {/* <Link href="/count"> */}
-            <button
-              type="submit"
-              onClick={() => handleRowClick(productCode)}
-              className="w-full bg-[#5ABCF5] text-white py-3  rounded-md hover:bg-[#5a90f5]"
-            >
-              ยืนยัน
-            </button>
-            {/* </Link> */}
+            <input
+              className="w-full p-2 border border-gray-300 my-3 rounded-lg text-lg focus:border-blue-500"
+              type="text"
+              placeholder="กรุณาใส่รหัสสินค้า"
+              value={productCode}
+              id="productCode"
+              onChange={handleInputChange}
+              maxLength={13} // จำกัดความยาวสูงสุด
+            />
 
             <div className="relative">
               <div className="overflow-y-auto max-h-80 rounded-lg mt-3">
@@ -177,6 +148,13 @@ function InputPage() {
                 </table>
               </div>
             </div>
+              <button
+                type="submit"
+                className="w-full bg-[#5ABCF5] text-white py-3  rounded-md hover:bg-[#5a90f5]"
+                onClick={onSubmit}
+              >
+                ยืนยัน
+              </button>
           </form>
 
           {isScanning && (
