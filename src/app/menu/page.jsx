@@ -12,7 +12,6 @@ function MenuPage() {
   const handleCheckInspection = async () => {
     try {
       const result = await checkInspectionRound();
-      console.log("checkInspectionRound", result);
       if (result.res_code === "000") {
         router.push("/amount");
       } else if (result.res_code === "E110") {

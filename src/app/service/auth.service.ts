@@ -15,7 +15,6 @@ class AuthService {
 
     async login(username: string, password: string): Promise<AuthResponse> {
         const response = await axios.post<AuthResponse>(`${this.apiUrl}/project-v0/auth/login-mobile`, { username, password });
-        console.log("login", response.data.datas.Token);
         const Token = response.data.datas.Token;
         this.setToken(Token);
         await this.getProfileByToken(Token);
@@ -31,7 +30,6 @@ class AuthService {
             const { data } = await axios.get<AuthResponse>(`${this.apiUrl}/project-v0/profile/getProfileByToken`, {
                 headers: { 'X-Authorization': Token }
             });
-            console.log("getProfileByToken", data);
     
             if (data?.datas) {
                 const { site_id, emp_position, emp_id, firstname, lastname, site_name, phone_number } = data.datas;

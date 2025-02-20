@@ -58,7 +58,6 @@ function InputPage() {
   }, []);
 
   const handleRowClick = (item) => {
-    console.log("You clicked on:", item);
     router.push(`/count/${item.item_id}?shelf=${selectedOption}`);
   };
 
