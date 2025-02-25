@@ -9,19 +9,19 @@ function Menubar() {
       items: [
         {
           label: "แจ้งปัญหา",
-          href: "",
+          href: "/admin/all_report",
         },
         {
           label: "รับเรื่องแล้ว",
-          href: "",
+          href: "/admin/report_recieve",
         },
         {
           label: "ส่งช่าง",
-          href: "",
+          href: "/admin/technician",
         },
         {
-          label: "ดำเนินการสำเร็จ",
-          href: "",
+          label: "ดำเนินการสำเร็จ",          
+          href: "/admin/report_success",
         },
       ],      
     },
