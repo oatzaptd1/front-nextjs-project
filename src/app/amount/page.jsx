@@ -103,6 +103,13 @@ function InputPage() {
               onChange={handleInputChange}
               maxLength={13} // จำกัดความยาวสูงสุด
             />
+                    <button
+                type="submit"
+                className="w-full bg-[#5ABCF5] text-white py-3  rounded-md hover:bg-[#5a90f5]"
+                onClick={onSubmit}
+              >
+                ยืนยัน
+              </button>
 
             <div className="relative">
               <div className="overflow-y-auto max-h-80 rounded-lg mt-3">
@@ -147,13 +154,7 @@ function InputPage() {
                 </table>
               </div>
             </div>
-              <button
-                type="submit"
-                className="w-full bg-[#5ABCF5] text-white py-3  rounded-md hover:bg-[#5a90f5]"
-                onClick={onSubmit}
-              >
-                ยืนยัน
-              </button>
+      
           </form>
 
           {isScanning && (

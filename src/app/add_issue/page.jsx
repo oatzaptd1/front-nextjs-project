@@ -157,7 +157,7 @@ function AddIssuePage() {
   
   return (
     <div>
-      <Navbar page="all_issue" title="แจ้งปัญหา" />
+      <Navbar page="/all_issue" title="แจ้งปัญหา" />
       <div className="mx-auto mt-8 py-4 p-4 bg-gray-300 rounded-md text-center w-64">
         <form action="">
           {/* Select Fields */}

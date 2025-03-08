@@ -57,7 +57,7 @@ function IssueDetailPage( {params}) {
 
   return (
     <div>
-      <Navbar page="all_issue" title="แจ้งปัญหา" />
+      <Navbar page="/all_issue" title="แจ้งปัญหา" />
       <div className="mt-8 text-center">
         <h2>รายละเอียดการแจ้งปัญหา</h2>
       </div>
