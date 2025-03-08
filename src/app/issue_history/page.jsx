@@ -1,41 +1,61 @@
-import React from "react";
+"use client";
+import React, { useEffect,useState } from "react";
 import Navbar from "../components/navbar";
 import Navigation from "../components/navigation";
-
-import Link from "next/link";
+import { getLocalStorageItem ,statusColors} from "../utils/common";
+import { getProblemHistoryBySiteId } from "../service/issue.service";
+import { useRouter } from "next/navigation";
 
 function IssueHistoryPage() {
+  const router = useRouter();
+  const [probHistory, setProbHistory] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const site_id = getLocalStorageItem("site_id");
+        if (!site_id) {
+          console.warn("Site ID not found in localStorage");
+          return;
+        }
+  
+        const res = await getProblemHistoryBySiteId(site_id);
+        setProbHistory(res.data);
+        
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+  
+    fetchData(); 
+  }, []); 
+const onRowClick = (issue_id) => {
+  router.push(`/issue_detail/${issue_id}`);
+}
+
   return (
     <div>
       <Navbar page="/menu" title="แจ้งปัญหา" />
       <h1 className="mt-8 text-center font-bold text-xl">
         ประวัติการแจ้งปัญหา
       </h1>
-      <div className="mx-auto mt-8 py-4 p-4 bg-gray-300 items-start rounded-md w-64">
-        <p>เรื่อง: จอ Monitor เสีย</p>
-        <p>อุปกรณ์: จอ Monitor</p>
-        <p>
-          สถานะ: <span className="text-green-500 font-bold">สำเร็จ</span>
-        </p>
-      </div>
-
-      <div className="mx-auto mt-4 p-4 bg-gray-300 items-start rounded-md w-64">
-        <p>เรื่อง: ท่อน้ำรั่ว</p>
-        <p>อุปกรณ์: ท่อน้ำ</p>
-        <p>
-          สถานะ: <span className="text-green-500 font-bold">สำเร็จ</span>
-        </p>
-      </div>
     
-    <Link href="issue_success">
-      <div className="mx-auto mt-4 p-4 bg-gray-300 items-start rounded-md w-64">
-        <p>เรื่อง: เครื่องสแกนเสีย</p>
-        <p>อุปกรณ์: เครื่องสแกน</p>
-        <p>
-          สถานะ: <span className="text-green-500 font-bold">สำเร็จ</span>
+        {Array.isArray(probHistory) && probHistory.map((prob) => (
+      <div
+        key={prob._id} 
+        className="mx-auto mt-4 p-4 bg-gray-300 items-start rounded-md w-64"
+        onClick = {() => onRowClick(prob._id)}
+      >
+        <p>เรื่อง: {prob.prob_name || "-"}</p>
+        <p>อุปกรณ์: {prob.prob_item_name || "-"}</p>
+        <div className="flex">
+        <p>สถานะ : </p>
+        <p className={`font-bold ${statusColors[prob.prob_status] || "text-gray-500"} pl-1`}>
+          {prob.prob_status}
         </p>
+        </div>
+        
       </div>
-    </Link>
+    ))}
       <Navigation
         navi1="แจ้งปัญหา"
         navi2="ประวัติการแจ้งปัญหา"
