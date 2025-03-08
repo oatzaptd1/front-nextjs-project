@@ -15,12 +15,9 @@ function LoginPage() {
     const trimmedUsername = username.trim();
     const trimmedPassword = password.trim();
     try {
-      console.log(username, password);
       const res = await AuthService.login(trimmedUsername, trimmedPassword);
-      console.log("resresresres",res);
       
       if(res.res_code === '000'){
-        console.log("login success");
         router.push("/menu"); 
       }else if (res.res_code === "E101") {
         setError("Invalid username or password. Please try again.");

@@ -13,7 +13,6 @@ const CountItemPage = ({ params, searchParams }) => {
   const { item_id } = params; 
   const shelf = searchParams?.shelf; 
   const barcode = searchParams?.barcode; 
-  console.log("barcode",searchParams);
   
   useEffect(() => {
     fetchProductDetail();
@@ -37,7 +36,6 @@ const CountItemPage = ({ params, searchParams }) => {
         }
         if (res && res.data) {
           setProductDetail(res.data);
-          console.log("getItemDetail", res.data);
         }
       } catch (error) {
         console.error("Error fetching item details:", error);
@@ -58,9 +56,7 @@ const CountItemPage = ({ params, searchParams }) => {
 
     try {
       const res = await countProduct(body);
-      console.log("countProduct response", res);
       if (res && res.res_code === "000") {
-        // alert("Success");
         Swal.fire({
           icon: "success",
           title: "สำเร็จ",

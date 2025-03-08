@@ -9,7 +9,6 @@ import {
   getCountProduct,
 } from "../service/api.service";
 import { formatRoundInThai } from "../utils/date";
-import { get } from "http";
 
 function CountHistoryPage() {
   const [selectedOption, setSelectedOption] = useState("");
@@ -21,13 +20,11 @@ function CountHistoryPage() {
 
   const handleChange = (e) => {
     setSelectedOption(e.target.value);
-    console.log("selectedOption", e.target.value);
   };
 
   useEffect(() => {
     const fetchTotalCountAndCounted = async () => {
       const res = await getTotalCountAndCounted();
-      console.log("getTotalCountAndCounted", res.data);
       if (res && res.data) {
         setTotalCount(res.data);
       }
@@ -50,10 +47,8 @@ function CountHistoryPage() {
   useEffect(() => {
     const getCountProductHistory = async () => {
       const filters_item_position = selectedOption;
-      console.log("filters_item_position", filters_item_position);
       
       const res = await getCountProduct(filters_item_position);
-      console.log("getCountProduct", res.data);
       setCountProduct(res.data);
     };
     getCountProductHistory();

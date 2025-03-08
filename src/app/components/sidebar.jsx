@@ -16,8 +16,6 @@ function Sidebar() {
   const logout = async () => {
     try {
       await AuthService.logout();
-      console.log("logout");
-
       router.push("/login");
     } catch (error) {
       setError("Invalid username or password");
