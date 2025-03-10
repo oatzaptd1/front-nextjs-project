@@ -30,13 +30,13 @@ const onRowClick = (issue_id) => {
   router.push(`/issue_detail/${issue_id}`);
 }
   return (
-    <div className="relative min-h-screen">
+    <div className="">
       <Navbar page="/menu" title="แจ้งปัญหา" />
       {Array.isArray(allProb) && allProb.map((prob) => {
         return (
-          <div
+          <div 
             key={prob.id}
-            className="mx-auto mt-8 py-4 p-4 bg-gray-300 items-start rounded-md w-64"
+            className="mx-auto mt-8 py-4 p-4 bg-white border shadow-md items-start rounded-md w-64"
             onClick={() => onRowClick(prob.id)}
           >
             <div className="items-start space-y-2">
@@ -74,6 +74,7 @@ const onRowClick = (issue_id) => {
         navi2="ประวัติการแจ้งปัญหา"
         page1="/all_issue"
         page2="/issue_history"
+        color1="bg-[#06A1FB] rounded-tr-2xl rounded-tl-2xl rounded-br-2xl"
       />
     </div>
   );

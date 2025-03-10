@@ -59,8 +59,9 @@ function Sidebar() {
           />
         </svg>
       </span>
+
       <div
-        className={`sidebar fixed top-0 bottom-0 lg:left-0 left-0 p-2 w-[300px] overflow-y-auto text-center bg-[#539cfc] transform ${
+        className={`fixed flex flex-col top-0 bottom-0 lg:left-0 left-0 p-2 w-[300px] overflow-y-auto bg-white transform ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         } transition-transform duration-300`}
       >
@@ -71,7 +72,7 @@ function Sidebar() {
               width="40"
               height="40"
               fill="currentColor"
-              className="bi bi-person-circle rounded-md items-center"
+              className="bi bi-person-circle rounded-md text-gray-500 "
               viewBox="0 0 16 16"
             >
               <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
@@ -86,31 +87,40 @@ function Sidebar() {
               width="16"
               height="16"
               fill="currentColor"
-              className="bi bi-x-lg ml-auto cursor-pointer"
+              stroke="currentColor"
+              className="bi bi-x-lg ml-auto cursor-pointer text-gray-700 "
               viewBox="0 0 16 16"
               onClick={toggleSidebar}
             >
               <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z" />
             </svg>
           </div>
-          <hr className="my-2 text-gray-600" />
+          <hr className="my-2 border-2 shadow border-gray-400" />
         </div>
 
-        <div className="ml-4 mt-5 text-start">
+        <span className="text-gray-400 font-light p-4">
+          Profile
+        </span>
+
+        <div className="ml-4 mt-1 text-start text-gray-500">
           <p>
             ชื่อ : {userData.firstName} {userData.lastName}
           </p>
           <p>สาขา : {userData.siteName}</p>
         </div>
 
+        <span className="text-gray-400 font-light p-4 mt-4">
+          Other
+        </span>
+
         <div onClick={logout}>
-          <div className="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white">
+          <div className="p-2.5 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-slate-200 transition">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="30"
               height="30"
               fill="currentColor"
-              className="bi bi-box-arrow-right"
+              className="bi bi-box-arrow-right text-black"
               viewBox="0 0 16 16"
             >
               <path
@@ -122,7 +132,7 @@ function Sidebar() {
                 d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"
               />
             </svg>
-            <span className="text-[15px] ml-4 text-gray-200">ออกจากระบบ</span>
+            <span className="text-[15px] ml-4 text-gray-500">ออกจากระบบ</span>
           </div>
         </div>
       </div>

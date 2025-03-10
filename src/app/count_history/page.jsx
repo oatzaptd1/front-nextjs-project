@@ -9,6 +9,7 @@ import {
   getCountProduct,
 } from "../service/api.service";
 import { formatRoundInThai } from "../utils/date";
+import { Select, MenuItem, FormControl, InputLabel } from "@mui/material";
 
 function CountHistoryPage() {
   const [selectedOption, setSelectedOption] = useState("");
@@ -47,7 +48,7 @@ function CountHistoryPage() {
   useEffect(() => {
     const getCountProductHistory = async () => {
       const filters_item_position = selectedOption;
-      
+
       const res = await getCountProduct(filters_item_position);
       setCountProduct(res.data);
     };
@@ -56,19 +57,49 @@ function CountHistoryPage() {
 
   return (
     <div>
-      <Navbar page = "/menu" title = "นับสินค้า"/>
+      <Navbar page="/menu" title="ประวัติการนับ" />
       <div className="flex flex-col justify-center items-center mt-8 space-y-6">
-        <h2 className="font-bold text-xl">ประวัติการนับสินค้า</h2>
+        
         <p className="text-lg">
           จำนวนสินค้าที่นับไปแล้ว : {totalCount.totalCountCounted}
         </p>
         <p className="text-lg">{formattedRound}</p>
 
-        <div className="w-70 mt-4">
-          <select
+        <div className="w-[300px] mt-4 bg-white border shadow p-3 rounded-md">
+          <FormControl fullWidth variant="outlined">
+            <InputLabel>เลือกชั้นวาง</InputLabel>
+            <Select
+              value={selectedOption}
+              onChange={handleChange}
+              label="เลือกชั้นวาง"
+              sx={{ width: "100%" }}
+              MenuProps={{
+                PaperProps: {
+                  style: {
+                    maxHeight: 300, // จำกัดความสูงของ dropdown
+                    overflowY: "auto", // ให้เลื่อนด้วย scroll mouse
+                  },
+                },
+              }}
+            >
+              <MenuItem value="">ทั้งหมด</MenuItem>
+              {shelfProducts.length > 0 ? (
+                shelfProducts.map((shelfProduct, index) => (
+                  
+                  <MenuItem key={index} value={shelfProduct}>
+                    ชั้นวาง {shelfProduct}
+                  </MenuItem>
+                ))
+              ) : (
+                <MenuItem disabled>ไม่มีข้อมูลชั้นวาง</MenuItem>
+              )}
+            </Select>
+          </FormControl>
+
+          {/* <select
             value={selectedOption}
             onChange={handleChange}
-            className="w-full p-3 border border-gray-300 rounded-lg text-lg focus:border-blue-500"
+            className="w-full p-3 border border-gray-300 rounded-xl text-lg focus:border-blue-500"
           >
             <option value="">ทั้งหมด</option>
             {shelfProducts.length > 0 ? (
@@ -80,7 +111,7 @@ function CountHistoryPage() {
             ) : (
               <option disabled>ไม่มีข้อมูลชั้นวาง</option>
             )}
-          </select>
+          </select> */}
 
           <div className="overflow-y-auto max-h-80 mt-6 space-y-4">
             {countProduct.length > 0 ? (
@@ -113,7 +144,13 @@ function CountHistoryPage() {
         </div>
       </div>
 
-      <Navigation navi1 = "นับสินค้า" navi2 = "ประวัติการนับ" page1 = "/amount" page2 = "/count_history"/>
+      <Navigation
+        navi1="นับสินค้า"
+        navi2="ประวัติการนับ"
+        page1="/amount"
+        page2="/count_history"
+        color2="bg-[#06A1FB] rounded-tr-2xl rounded-tl-2xl rounded-bl-2xl"
+      />
     </div>
   );
 }

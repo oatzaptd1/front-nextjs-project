@@ -158,7 +158,7 @@ function AddIssuePage() {
   return (
     <div>
       <Navbar page="/all_issue" title="แจ้งปัญหา" />
-      <div className="mx-auto mt-8 py-4 p-4 bg-gray-300 rounded-md text-center w-64">
+      <div className="mx-auto mt-8 py-4 p-4 bg-white border shadow-md rounded-md text-center w-64">
         <form action="">
           {/* Select Fields */}
           <div className="flex items-center space-x-2">
@@ -167,7 +167,7 @@ function AddIssuePage() {
             type="text" 
             value={title} 
             onChange={handleInputChange}
-            className="rounded-md w-full h-10" />
+            className="rounded-md w-full h-10 border border-gray-300 " />
           </div>
 
           <div className="flex items-center space-x-2 mt-4">
@@ -203,7 +203,7 @@ function AddIssuePage() {
           {/* Upload Section */}
           <p className="mt-4">รายละเอียด:</p>
           <input type="text" 
-          className="rounded-md w-full h-20" 
+          className="rounded-md w-full h-20 border border-gray-300" 
           value={probDetail}
           onChange={handleProbDetailChange}
           />
