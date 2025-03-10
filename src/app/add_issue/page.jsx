@@ -6,37 +6,70 @@ import TrashIcon from "../../assets/icons/TrashIcon";
 import { createProblem, getProbType, getTechnicalItems } from "../service/issue.service";
 import { getLocalStorageItem } from "../utils/common";
 import Swal from "sweetalert2";
+import { message ,Spin} from "antd";
+import { uploadFile } from "../service/api.service";
 
 function AddIssuePage() {
-  const [selectedType, setSelectedType] = useState("1");
-  const [selectedEquipment, setSelectedEquipment] = useState("");
+  const [selectedType, setSelectedType] = useState(1);
+  const [selectedEquipment, setSelectedEquipment] = useState(1);
   const [files, setFiles] = useState([]);
   const [filePreviews, setFilePreviews] = useState([]);
   const [probType, setProbType] = useState([]);
   const [technicalItems, setTechnicalItems] = useState([]);
   const [title, setTitle] = useState(""); 
+  const [image, setImage] = useState([]);
   const [probDetail, setProbDetail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [loadingImage, setLoadingImage] = useState(false);
   const handleProbDetailChange = (e) => setProbDetail(e.target.value);
   const handleEquipmentChange = (e) => setSelectedEquipment(e.target.value);
   const handleInputChange = (e) => { setTitle(e.target.value);};
 
-  const handleFileChange = (e) => {
+  const handleFileChange = async (e) => {
     const selectedFiles = Array.from(e.target.files);
+
     if (selectedFiles.length > 0) {
-      const totalFiles = files.length + selectedFiles.length;
-      if (totalFiles > 3) {
-        alert("คุณสามารถอัปโหลดไฟล์ได้สูงสุด 3 ไฟล์เท่านั้น");
-        return;
+        const totalFiles = files.length + selectedFiles.length;
+        if (totalFiles > 3) {
+            message.error("คุณสามารถอัปโหลดไฟล์ได้สูงสุด 3 ไฟล์เท่านั้น");
+            return;
+        }
+
+        setFiles((prevFiles) => [...prevFiles, ...selectedFiles]);
+
+        const newPreviews = selectedFiles.map((file) => ({
+            file,
+            url: URL.createObjectURL(file),
+        }));
+        setFilePreviews((prevPreviews) => [...prevPreviews, ...newPreviews]);
+
+        await uploadFilesAsync(selectedFiles);
+    }
+};
+
+  const uploadFilesAsync = async (filesToUpload) => {
+    setLoadingImage(true);
+    try {
+      const formData = new FormData();
+
+      filesToUpload.forEach((file) => {
+        formData.append("files", file); 
+      });
+
+      const res = await uploadFile(formData); 
+      
+      if (Array.isArray(res.data)) {
+          const newImageUrls = res.data.map((item) => item.url);
+      
+          setImage((prevImages) => [...prevImages, ...newImageUrls]); 
+      } else {
+          console.error("Invalid response format:", res.data);
       }
-
-      setFiles([...files, ...selectedFiles]);
-
-      const newPreviews = selectedFiles.map((file) => ({
-        file,
-        url: URL.createObjectURL(file),
-      }));
-      setFilePreviews([...filePreviews, ...newPreviews]);
+      
+    } catch (error) {
+      console.error("Upload failed:", error);
+    } finally {
+      setLoadingImage(false); 
     }
   };
 
@@ -56,7 +89,7 @@ function AddIssuePage() {
       }
     };
 
-    fetchDataProbType();
+    fetchDataProbType(selectedEquipment)
     fetchTechnicalItem(selectedType);
   }, []);
 
@@ -89,32 +122,29 @@ function AddIssuePage() {
     event.preventDefault(); 
   
     if (!title.trim()) {
-      alert("กรุณากรอกเรื่อง");
+      message.error("กรุณากรอกเรื่อง");
       return;
     }
     if (!selectedType) {
-      alert("กรุณาเลือกประเภท");
+      message.error("กรุณาเลือกประเภท");
       return;
     }
     if (!selectedEquipment) {
-      alert("กรุณาเลือกอุปกรณ์");
+      message.error("กรุณาเลือกอุปกรณ์");
       return;
     }
     if (!probDetail.trim()) {
-      alert("กรุณากรอกรายละเอียด");
+      message.error("กรุณากรอกรายละเอียด");
       return;
     }
     if (files.length === 0) {
-      alert("กรุณาแนบรูปภาพหรือวิดีโออย่างน้อย 1 ไฟล์");
+      message.error("กรุณาแนบรูปภาพหรือวิดีโออย่างน้อย 1 ไฟล์");
       return;
     }
   
     const create_by = getLocalStorageItem("firstname") || "Unknown";
     const site_id = getLocalStorageItem("site_id") || "N/A";
     const site_name = getLocalStorageItem("site_name") || "N/A";
-    console.log("create_by", create_by);
-    console.log("site_id", site_id);
-    console.log("site_name", site_name);
     try {
       setIsLoading(true); 
       const body = {
@@ -122,26 +152,22 @@ function AddIssuePage() {
         prob_type: selectedType,
         prob_item: selectedEquipment,
         prob_detail: probDetail.trim(),
-        prob_image: files,
+        prob_image: image,
         create_by,
         site_id,
         site_desc: site_name,
       };
-      console.log("Request body:", body);
-      const response = await createProblem({
-        body
-      });
-      console.log("Response:", response);
+      const response = await createProblem(body)
       
-      if (response?.status === 200) {
-        alert("แจ้งปัญหาสำเร็จ!");
-        resetForm(); // Clear form after success
+      if (response?.res_code === '000') {
+        message.success("แจ้งปัญหาสำเร็จ!");
+        resetForm(); 
       } else {
         Swal.fire({ icon: "error", title: response.res_code, text: response.res_msg });
       }
     } catch (error) {
       console.error("Error submitting issue:", error);
-      alert("เกิดข้อผิดพลาด กรุณาตรวจสอบข้อมูลและลองใหม่อีกครั้ง");
+      message.error("เกิดข้อผิดพลาด กรุณาตรวจสอบข้อมูลและลองใหม่อีกครั้ง");
     } finally {
       setIsLoading(false); 
     }
@@ -200,12 +226,12 @@ function AddIssuePage() {
             </select>
           </div>
 
-          {/* Upload Section */}
           <p className="mt-4">รายละเอียด:</p>
-          <input type="text" 
-          className="rounded-md w-full h-20" 
-          value={probDetail}
-          onChange={handleProbDetailChange}
+          <input
+            type="text"
+            className="rounded-md w-full h-20"
+            value={probDetail}
+            onChange={handleProbDetailChange}
           />
 
           <div className="mt-4">
@@ -228,11 +254,16 @@ function AddIssuePage() {
             </div>
           </div>
 
-          {/* File List Display */}
           {filePreviews.length > 0 && (
             <div className="mt-4 space-y-2">
               {filePreviews.map(({ file, url }, index) => (
-                <div key={index} className="flex items-center space-x-4 p-2 border rounded-lg">
+                <div key={index} className="flex items-center space-x-4 p-2 border rounded-lg relative">
+                  {loadingImage && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-md">
+                      <Spin className="text-white" />
+                    </div>
+                  )}
+                  
                   {file.type.startsWith("image/") ? (
                     <img
                       src={url}
@@ -244,7 +275,9 @@ function AddIssuePage() {
                       <source src={url} type={file.type} />
                     </video>
                   )}
+                  
                   <p className="flex-1 truncate">{file.name}</p>
+                  
                   <button
                     onClick={() => handleRemoveFile(index)}
                     className="text-red-500 hover:text-red-700"
