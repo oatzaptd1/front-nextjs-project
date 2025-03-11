@@ -1,23 +1,25 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 
-function Navbar() {
+function Navbar(props) {
   const router = useRouter();
 
-  const goBack = () => {
-    router.push("/menu");
+  const { page, title } = props;
+
+  const goToPage = (page) => {
+    router.push(page);
   };
 
   return (
     <div>
       <nav className="bg-[#5ABCF5] text-lg text-white p-8">
         <div className="container mx-auto">
-          <div className="flex justify-center">นับสินค้า</div>
+          <div className="flex justify-center">{title}</div>
           <div
             className="absolute text-white text-4xl top-4 left-4 cursor-pointer"
-            onClick={goBack}
+            onClick={() => goToPage(page)} 
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

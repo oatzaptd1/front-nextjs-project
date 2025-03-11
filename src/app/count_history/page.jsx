@@ -1,53 +1,158 @@
-"use client"
+"use client";
 
-import React, { useState } from 'react'
-import Navbar from '../components/navbar'
-import Navigation from '../components/navigation'
+import React, { useState, useEffect } from "react";
+import Navbar from "../components/navbar";
+import Navigation from "../components/navigation";
+import {
+  getTotalCountAndCounted,
+  getShelfProducts,
+  getCountProduct,
+} from "../service/api.service";
+import { formatRoundInThai } from "../utils/date";
+import { Select, MenuItem, FormControl, InputLabel } from "@mui/material";
 
 function CountHistoryPage() {
-    const [selectedOption, setSelectedOption] = useState("");
-    const handleChange = (e) => {
-        setSelectedOption(e.target.value);
+  const [selectedOption, setSelectedOption] = useState("");
+  const [totalCount, setTotalCount] = useState({});
+  const [shelfProducts, setShelfProducts] = useState([]);
+  const [countProduct, setCountProduct] = useState([]);
+
+  const formattedRound = formatRoundInThai(totalCount.round);
+
+  const handleChange = (e) => {
+    setSelectedOption(e.target.value);
+  };
+
+  useEffect(() => {
+    const fetchTotalCountAndCounted = async () => {
+      const res = await getTotalCountAndCounted();
+      if (res && res.data) {
+        setTotalCount(res.data);
+      }
     };
+    fetchTotalCountAndCounted();
+  }, []);
+  useEffect(() => {
+    const fetchShelfProducts = async () => {
+      try {
+        const res = await getShelfProducts();
+        setShelfProducts(res.data);
+      } catch (error) {
+        console.error("Error fetching shelf products", error);
+      }
+    };
+
+    fetchShelfProducts();
+  }, []);
+
+  useEffect(() => {
+    const getCountProductHistory = async () => {
+      const filters_item_position = selectedOption;
+
+      const res = await getCountProduct(filters_item_position);
+      setCountProduct(res.data);
+    };
+    getCountProductHistory();
+  }, [selectedOption]);
 
   return (
     <div>
-        <Navbar/>
-        <div className='flex flex-col justify-center items-center mt-8'>
-            <h2 className='font-bold'>ประวัติการนับสินค้า</h2>
-            <br />
-            <p>จำนวนสินค้าที่นับไปแล้ว</p>
-            <p>รอบ 30 เมษายน 67 ถึง 31 พ.ค. 67</p>
-            <div className='w-64 mt-4'>
-                <select
-                    value={selectedOption}
-                    onChange={handleChange}
-                    className="w-full p-2 border border-gray-300 rounded-lg text-lg focus:border-blue-500 "
+      <Navbar page="/menu" title="ประวัติการนับ" />
+      <div className="flex flex-col justify-center items-center mt-8 space-y-6">
+        
+        <p className="text-lg">
+          จำนวนสินค้าที่นับไปแล้ว : {totalCount.totalCountCounted}
+        </p>
+        <p className="text-lg">{formattedRound}</p>
+
+        <div className="w-[300px] mt-4 bg-white border shadow p-3 rounded-md">
+          <FormControl fullWidth variant="outlined">
+            <InputLabel>เลือกชั้นวาง</InputLabel>
+            <Select
+              value={selectedOption}
+              onChange={handleChange}
+              label="เลือกชั้นวาง"
+              sx={{ width: "100%" }}
+              MenuProps={{
+                PaperProps: {
+                  style: {
+                    maxHeight: 300, // จำกัดความสูงของ dropdown
+                    overflowY: "auto", // ให้เลื่อนด้วย scroll mouse
+                  },
+                },
+              }}
+            >
+              <MenuItem value="">ทั้งหมด</MenuItem>
+              {shelfProducts.length > 0 ? (
+                shelfProducts.map((shelfProduct, index) => (
+                  
+                  <MenuItem key={index} value={shelfProduct}>
+                    ชั้นวาง {shelfProduct}
+                  </MenuItem>
+                ))
+              ) : (
+                <MenuItem disabled>ไม่มีข้อมูลชั้นวาง</MenuItem>
+              )}
+            </Select>
+          </FormControl>
+
+          {/* <select
+            value={selectedOption}
+            onChange={handleChange}
+            className="w-full p-3 border border-gray-300 rounded-xl text-lg focus:border-blue-500"
+          >
+            <option value="">ทั้งหมด</option>
+            {shelfProducts.length > 0 ? (
+              shelfProducts.map((shelfProduct, index) => (
+                <option key={index} value={shelfProduct}>
+                  ชั้นวาง {shelfProduct}
+                </option>
+              ))
+            ) : (
+              <option disabled>ไม่มีข้อมูลชั้นวาง</option>
+            )}
+          </select> */}
+
+          <div className="overflow-y-auto max-h-80 mt-6 space-y-4">
+            {countProduct.length > 0 ? (
+              countProduct.map((item, index) => (
+                <div
+                  key={index}
+                  className="py-4 px-6 bg-gray-100 rounded-md shadow-sm"
                 >
-                    <option value="">ทั้งหมด</option>
-                    <option value="option1">ชั้นวาง A1</option>
-                    <option value="option2">ชั้นวาง A2</option>
-                    <option value="option3">ชั้นวาง B1</option>
-                </select>
-                <div className="mx-auto mt-4 py-4 p-8 bg-gray-100 rounded-md text-start">
-                    <h1 className="text-xs mb-2 text-gray-600">ชื่อ : Dettol Disinfectant Wipes</h1>
-                    <h1 className="text-xs mb-2 text-gray-600">วันและเวลา : 20 พ.ค. 67 13:30</h1>
-                    <h1 className="text-xs mb-2 text-gray-600">สินค้าที่นับได้ : 37</h1>
-                    <h1 className="text-xs mb-2 text-gray-600">สินค้าในระบบ : 38</h1>
-                    <h1 className="text-xs mb-2 text-gray-600">ขาด/เกิน : -1</h1>
+                  <h1 className="text-sm mb-2 text-gray-600">
+                    ชื่อ : {item.item_desc1 || "-"}
+                  </h1>
+                  <h1 className="text-sm mb-2 text-gray-600">
+                    วันและเวลา : {item.update_date || "-"}
+                  </h1>
+                  <h1 className="text-sm mb-2 text-gray-600">
+                    สินค้าที่นับได้ : {item.item_qty || "-"}
+                  </h1>
+                  <h1 className="text-sm mb-2 text-gray-600">
+                    สินค้าในระบบ : {item.onhand_balance_qty || "-"}
+                  </h1>
+                  <h1 className="text-sm mb-2 text-gray-600">
+                    ขาด/เกิน : {item.difference_count || "-"}
+                  </h1>
                 </div>
-                <div className="mx-auto mt-4 py-4 p-8 bg-gray-100 rounded-md text-start">
-                    <h1 className="text-xs mb-2 text-gray-600">ชื่อ : SOS plus เทปพันยืดหยุ่น</h1>
-                    <h1 className="text-xs mb-2 text-gray-600">วันและเวลา : 20 พ.ค. 67 13:30</h1>
-                    <h1 className="text-xs mb-2 text-gray-600">สินค้าที่นับได้ : 22</h1>
-                    <h1 className="text-xs mb-2 text-gray-600">สินค้าในระบบ : 22</h1>
-                    <h1 className="text-xs mb-2 text-gray-600">ขาด/เกิน : 0</h1>
-                </div>
-            </div>
+              ))
+            ) : (
+              <p className="text-gray-600 text-center">No data available</p>
+            )}
+          </div>
         </div>
-        <Navigation/>
+      </div>
+
+      <Navigation
+        navi1="นับสินค้า"
+        navi2="ประวัติการนับ"
+        page1="/amount"
+        page2="/count_history"
+        color2="bg-[#06A1FB] rounded-tr-2xl rounded-tl-2xl rounded-bl-2xl"
+      />
     </div>
-  )
+  );
 }
 
-export default CountHistoryPage
+export default CountHistoryPage;
