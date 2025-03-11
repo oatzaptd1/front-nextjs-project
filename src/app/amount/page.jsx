@@ -110,7 +110,7 @@ function InputPage() {
                 }}
               >
                 <MenuItem value="">เลือกชั้นวาง</MenuItem>
-                {shelfProducts.length > 0 ? (
+                {shelfProducts?.length > 0 ? (
                   shelfProducts.map((shelfProduct, index) => (
                     <MenuItem key={index} value={shelfProduct}>
                       ชั้นวาง {shelfProduct}
