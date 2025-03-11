@@ -169,7 +169,6 @@ function AllReport() {
                 <span className="text-[#50B0E9]">วันที่เริ่มต้น</span>
                 <DatePicker
                   selected={startDate}
-                  placeholderText="วว/ดด/ปปปป"
                   onChange={(date) => setStartDate(date)}
                   dateFormat="dd/MM/yyyy"
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400"
@@ -180,7 +179,6 @@ function AllReport() {
                 <span className="text-[#50B0E9]">วันที่สิ้นสุด</span>
                 <DatePicker
                   selected={endDate}
-                  placeholderText="วว/ดด/ปปปป"
                   onChange={(date) => setEndDate(date)}
                   dateFormat="dd/MM/yyyy"
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400"
