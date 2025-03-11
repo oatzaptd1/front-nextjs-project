@@ -17,8 +17,7 @@ class AuthService {
         const response = await axios.post<AuthResponse>(`${this.apiUrl}/project-v0/auth/login-mobile`, { username, password });
         const Token = response.data.datas.Token;
         this.setToken(Token);
-        await this.getProfileByToken(Token);
-        return response.data;
+        return this.getProfileByToken(Token);
     }
 
     logout(): void {

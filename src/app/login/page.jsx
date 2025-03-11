@@ -12,21 +12,27 @@ function LoginPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(""); 
+
     const trimmedUsername = username.trim();
     const trimmedPassword = password.trim();
+
     try {
-      const res = await AuthService.login(trimmedUsername, trimmedPassword);
-      
-      if(res.res_code === '000'){
-        router.push("/menu"); 
-      }else if (res.res_code === "E101") {
-        setError("Invalid username or password. Please try again.");
-        return;
-      }
+        const res = await AuthService.login(trimmedUsername, trimmedPassword);
+        if (res?.res_code === "000") {
+            if (res?.datas?.emp_position?.toLowerCase() === "แอดมิน") {
+                router.push("/admin/all_report"); 
+            } else {
+                router.push("/menu"); 
+            }
+        } else if (res?.res_code === "E101") {
+            setError("Invalid username or password. Please try again.");
+        }
     } catch (error) {
-      setError("Invalid username or password");
+        console.error("Login Error:", error);
+        setError("Invalid username or password");
     }
-  };
+};
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-[#5ABCF5]">

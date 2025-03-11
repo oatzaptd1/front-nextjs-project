@@ -1,7 +1,18 @@
 import React from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
+import AuthService from "../../service/auth.service";
 
 function Menubar() {
+  const pathname = usePathname(); 
+  const router = useRouter(); 
+
+  const logout = () => {
+    console.log("Logout Clicked");
+    AuthService.logout();
+    router.push("/login"); 
+  };
 
   const menuItems = [
     {
@@ -11,21 +22,8 @@ function Menubar() {
           label: "แจ้งปัญหา",
           href: "/admin/all_report",
         },
-        {
-          label: "รับเรื่องแล้ว",
-          href: "/admin/report_recieve",
-        },
-        {
-          label: "ส่งช่าง",
-          href: "/admin/technician",
-        },
-        {
-          label: "ดำเนินการสำเร็จ",          
-          href: "/admin/report_success",
-        },
-      ],      
+      ],
     },
-
     {
       title: "Other",
       items: [
@@ -50,29 +48,42 @@ function Menubar() {
             </svg>
           ),
           label: "ออกจากระบบ",
-          href: "",
-        }
-      ]
-    }
+          href: "#",
+          onClick: logout, 
+        },
+      ],
+    },
   ];
 
   return (
     <div className="mt-4 text-sm">
-      {menuItems.map((i) => (
-        <div className="flex flex-col gap-2" key={i.title}>
-          <span className="text-gray-400 font-light my-4">
-            {i.title}
-          </span>
-          {i.items.map((item) => (
-            <Link
-              href={item.href}
-              key={item.label}
-              className="flex items-center gap-4 text-gray-500 py-2 p-4 rounded-lg hover:bg-slate-200 transition"
-            >
-              {item.icon}
-              <span>{item.label}</span>
-            </Link>
-          ))}
+      {menuItems.map((i, index) => (
+        <div className="flex flex-col gap-2" key={index}>
+          <span className="text-gray-400 font-light my-4">{i.title}</span>
+          {i.items.map((item) => {
+            const isActive = pathname === item.href;
+            return item.label === "ออกจากระบบ" ? (
+              <button
+                key={item.label}
+                className="flex items-center gap-4 py-2 p-4 rounded-lg transition text-gray-500 hover:bg-slate-200"
+                onClick={logout} 
+              >
+                {item.icon}
+                <span>{item.label}</span>
+              </button>
+            ) : (
+              <Link
+                href={item.href}
+                key={item.label}
+                className={`flex items-center gap-4 py-2 p-4 rounded-lg transition ${
+                  isActive ? "bg-[#50B0E9] text-white font-semibold" : "text-gray-500 hover:bg-slate-200"
+                }`}
+              >
+                {item.icon}
+                <span>{item.label}</span>
+              </Link>
+            );
+          })}
         </div>
       ))}
     </div>
