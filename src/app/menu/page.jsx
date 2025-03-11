@@ -40,7 +40,7 @@ function MenuPage() {
       <div className="flex flex-col items-center justify-center ">
         <button
           type="submit"
-          className="w-60 text-white text-lg bg-[#5ABCF5] py-3 my-2 mt-10 rounded-md hover:bg-[#5a90f5]"
+          className="w-60 mt-10 my-2 shadow-md bg-white text-[#5ABCF5] hover:text-white font-semibold py-3 rounded-xl hover:bg-[#5ABCF5] border-[3px] border-[#5ABCF5] duration-75 transition"
           onClick={handleCheckInspection}
         >
           นับสินค้า
@@ -49,7 +49,7 @@ function MenuPage() {
         <Link href="all_issue">
           <button
             type="submit"
-            className="w-60 text-white text-lg bg-[#5ABCF5] py-3 my-2 rounded-md hover:bg-[#5a90f5]"
+            className="w-60 mt-2 shadow-md bg-white text-[#5ABCF5] hover:text-white font-semibold py-3 rounded-xl hover:bg-[#5ABCF5] border-[3px] border-[#5ABCF5] duration-75 transition"
           >
             แจ้งปัญหา
           </button>

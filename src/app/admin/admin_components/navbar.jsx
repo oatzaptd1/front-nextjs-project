@@ -18,10 +18,6 @@ function Navbar() {
   return (
     <div className="flex items-center justify-between p-4 bg-[#50B0E9] ">
       {/* home icon */}
-      <div className="">
-        <Image src="/images/homelogo.png" alt="" width={150} height={20} />
-      </div>
-      {/* name role branch */}
       <div className="flex items-center gap-6 justify-end w-full">
         <div className="flex flex-col text-white text-[14px] leading-4 font-medium">
           <span>ชื่อ : {userData.user_name}</span>

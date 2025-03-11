@@ -34,15 +34,12 @@ const onRowClick = (issue_id) => {
 
   return (
     <div>
-      <Navbar page="/menu" title="แจ้งปัญหา" />
-      <h1 className="mt-8 text-center font-bold text-xl">
-        ประวัติการแจ้งปัญหา
-      </h1>
+      <Navbar page="/menu" title="ประวัติการแจ้งปัญหา" />
     
         {Array.isArray(probHistory) && probHistory.map((prob) => (
       <div
         key={prob._id} 
-        className="mx-auto mt-4 p-4 bg-gray-300 items-start rounded-md w-64"
+        className="mx-auto mt-8 p-4 bg-white border shadow-md items-start rounded-md w-64"
         onClick = {() => onRowClick(prob._id)}
       >
         <p>เรื่อง: {prob.prob_name || "-"}</p>
@@ -61,6 +58,7 @@ const onRowClick = (issue_id) => {
         navi2="ประวัติการแจ้งปัญหา"
         page1="/all_issue"
         page2="/issue_history"
+        color2="bg-[#06A1FB] rounded-tr-2xl rounded-tl-2xl rounded-bl-2xl"
       />
     </div>
   );

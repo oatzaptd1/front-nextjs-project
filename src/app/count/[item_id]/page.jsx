@@ -83,8 +83,8 @@ const CountItemPage = ({ params, searchParams }) => {
   return (
     <div>
       <Navbar page = "/amount" title = "นับสินค้า"/>
-      <div className="flex flex-col justify-center items-center mt-8 ">
-        <div className="flex flex-col justify-center items-center mt-8">
+      <div className="flex flex-col justify-center items-center mt-8 p-4 bg-white border rounded-md shadow-md max-w-md mx-auto">
+        
           <div className="flex items-center space-x-4">
             {productDetail && productDetail.item_image ? (
               <img
@@ -101,11 +101,10 @@ const CountItemPage = ({ params, searchParams }) => {
                 : "Product Name"}
             </h1>
           </div>
-        </div>
-
+        
         <input
           type="text"
-          className="flex w-60 border border-gray-500 p-3 my-2 rounded-md mb-4 text-center"
+          className="flex w-60 border border-gray-500 p-3 my-2 rounded-xl mb-4 text-center"
           value={itemQty}
           // onChange={(e) => setItemQty(e.target.value)}
           onChange={(e) => {
@@ -121,7 +120,7 @@ const CountItemPage = ({ params, searchParams }) => {
         <div>
           <button
             type="submit"
-            className="w-60 bg-[#5ABCF5] text-white py-3 rounded-md hover:bg-[#5a90f5]"
+            className="w-60  bg-white text-[#5ABCF5] hover:text-white font-semibold py-3 rounded-xl hover:bg-[#5ABCF5] border-2 border-[#5ABCF5] duration-75 transition"
             onClick={countItemProduct}
           >
             ยืนยัน
