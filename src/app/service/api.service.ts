@@ -77,3 +77,39 @@ export async function getCountProduct(filters_item_position){
     return error;
   }
 }
+
+export async function getProblemReceived(body: { search: string; status: string; limit: number; page: number; }){
+  try {
+    const result = await axios.post(`/project-v0/problem/get-problem-all`,body);
+    return result.data;
+  } catch (error) {
+    return error;
+  }
+}
+
+export async function getStatusProblem(){
+  try {
+    const result = await axios.get(`/project-v0/problem/get-status-problem`);
+    return result.data;
+  } catch (error) {
+    return error;
+  }
+}
+
+export async function updateStatusProblem(body){
+  try {
+    const result = await axios.post(`/project-v0/problem/update-status-problem`, body);
+    return result.data;
+  } catch (error) {
+    return error;
+  }
+}
+
+export async function uploadFile(files){
+  try {
+    const result = await axios.post(`/project-v0/upload/upload`, files);
+    return result.data;
+  } catch (error) {
+    return error;
+  }
+}

@@ -13,23 +13,27 @@ function LoginPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(""); 
+
     const trimmedUsername = username.trim();
     const trimmedPassword = password.trim();
-    try {
-      const res = await AuthService.login(trimmedUsername, trimmedPassword);
-      console.log("resresresres", res);
 
-      if (res.res_code === "000") {
-        console.log("login success");
-        router.push("/menu");
-      } else if (res.res_code === "E101") {
-        setError("Invalid username or password. Please try again.");
-        return;
-      }
+    try {
+        const res = await AuthService.login(trimmedUsername, trimmedPassword);
+        if (res?.res_code === "000") {
+            if (res?.datas?.emp_position?.toLowerCase() === "แอดมิน") {
+                router.push("/admin/all_report"); 
+            } else {
+                router.push("/menu"); 
+            }
+        } else if (res?.res_code === "E101") {
+            setError("Invalid username or password. Please try again.");
+        }
     } catch (error) {
-      setError("ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง");
+        console.error("Login Error:", error);
+        setError("Invalid username or password");
     }
-  };
+};
 
   return (
     <div className="h-screen flex">
