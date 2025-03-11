@@ -31,7 +31,11 @@ const CountItemPage = ({ params, searchParams }) => {
       try {
         const res = await getItemDetail(body);
         if (res.res_code === "E101") {
-          alert(res.res_msg);
+          Swal.fire({
+            icon: "error",
+            title: "ไม่พบข้อมูล",
+            text: res.res_msg,
+          });
           router.push("/amount");
         }
         if (res && res.data) {
