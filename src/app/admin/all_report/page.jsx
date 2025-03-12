@@ -1,22 +1,23 @@
 "use client";
 
-import React, {useEffect } from "react";
+import React, { useEffect } from "react";
 import Menubar from "../admin_components/menubar";
 import Navbar from "../admin_components/navbar";
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import "react-datepicker/dist/react-datepicker.css";
-import { getProblemReceived } from "../../service/api.service";
-import { Button ,Table ,DatePicker,Input,message} from 'antd';
+import { getProblemReceived, getStatus, getStatusProblem } from "../../service/api.service";
+import { Button ,Table ,DatePicker,Input,message ,Select} from 'antd';
 import EditStatusModal from "../../components/EditStatusModal"; 
 import EditIcon from "../../../assets/icons/EditIcon"
 import { formatDateInThai } from "../../utils/date";
+import dayjs from "dayjs";
 
 function AllReport() {
-  const [search, setSearch] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
+  const [search, setSearch] = useState();
+  const [startDate, setStartDate] = useState(dayjs().format("YYYY-MM-DD"));
+  const [endDate, setEndDate] = useState(dayjs().format("YYYY-MM-DD"));
   const [page, setPage] = useState(1); 
   const [rowsPerPage, setRowsPerPage] = useState(10); 
   const [totalPages, setTotalPages] = useState(0); 
@@ -24,28 +25,22 @@ function AllReport() {
   const [bottom] = useState('bottomCenter');
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState(null); 
-
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0); // รีเซ็ตหน้าเป็น 0 เมื่อเปลี่ยนจำนวนแถวที่แสดง
-  };
+  const [problemStatus, setProblemStatus] = useState([]);
+  const [status, setStatus] = useState("");
 
   useEffect(() => {
     fetchProblemReceived();
-  }, [page, rowsPerPage , startDate, endDate]); 
-
+  }, [page, rowsPerPage , startDate, endDate , status]); 
   
   const fetchProblemReceived = async () => {
     const body = {
       search: search,
-      status: "",
+      status:  status || "",
       limit: rowsPerPage, 
       page: page, 
       start_date: startDate,
       end_date: endDate,
     };
-  
     const res = await getProblemReceived(body);
   
     if (res && res.data) {
@@ -59,7 +54,19 @@ function AllReport() {
 
     }
   };
-  
+
+  const getAllStatus = async () => {
+    const res = await getStatusProblem();
+    if (res && res.status) {
+      setProblemStatus(res.status);
+    } else {
+      message.error(res.res_msg);
+    }
+  }
+  useEffect(() => {
+    getAllStatus();
+  }, []);
+
   const handleSearch = () => {
     fetchProblemReceived();
   };
@@ -71,7 +78,12 @@ function AllReport() {
     setModalOpen(false);
     fetchProblemReceived();
   };
-  
+
+  const onStatusChange = (value) => {
+    setStatus(value);
+    fetchProblemReceived();
+  }
+
   const columns = [
     {
       title: "เลขแจ้งปัญหา",
@@ -165,25 +177,43 @@ function AllReport() {
                 />
               </div>
 
-              <div className="flex flex-col relative w-1/5">
+              <div className="flex flex-col relative w-1/6">
                 <span className="text-[#50B0E9]">วันที่เริ่มต้น</span>
                 <DatePicker
                   selected={startDate}
                   onChange={(date) => setStartDate(date)}
-                  dateFormat="dd/MM/yyyy"
+                  locale={"th"}
+                  defaultValue={dayjs(new Date())}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400"
                 />
               </div>
 
-              <div className="flex flex-col relative w-1/5">
+              <div className="flex flex-col relative w-1/6">
                 <span className="text-[#50B0E9]">วันที่สิ้นสุด</span>
                 <DatePicker
                   selected={endDate}
                   onChange={(date) => setEndDate(date)}
                   dateFormat="dd/MM/yyyy"
+                  locale={"th"}
+                  defaultValue={dayjs(new Date())}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400"
                 />
               </div>
+              <div className="flex flex-col relative w-1/6">
+              <span className="text-[#50B0E9]">สถานะ</span>
+
+              <Select className="w-full h-full" 
+              onChange={(value) => onStatusChange(value)}
+              >
+              {problemStatus &&
+                Object.entries(problemStatus).map(([value, label]) => (
+                <Select.Option key={value} value={label}>
+                  {label}
+                  </Select.Option>
+                  ))}
+              </Select>
+              </div>
+              
             </div>
 
             <Table
