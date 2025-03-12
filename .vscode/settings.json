@@ -1,7 +1,4 @@
 {
-<<<<<<< HEAD
-}
-=======
     "editor.mouseWheelZoom": true,
      "git.confirmSync": false,
      "git.autofetch": true,
@@ -57,4 +54,3 @@
    "vscode-pets.theme": "forest",
    "terminal.integrated.fontSize": 11,
    }
->>>>>>> develop
