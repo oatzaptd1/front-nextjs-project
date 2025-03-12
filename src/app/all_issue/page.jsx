@@ -99,6 +99,7 @@ const onRowClick = (issue_id) => {
                         {prob.prob_status}
                       </span>
                     </b>
+                    <p>วันที่แจ้ง : {prob.create_date}</p>
                   </Card>
                 </div>
               ))}
