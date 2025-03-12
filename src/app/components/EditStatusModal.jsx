@@ -33,7 +33,6 @@ const EditStatusModal = ({ param, open, onCancel, onOk }) => {
     const res = await getProblemById(param);
     if (res && res.data) {
       setData(res.data);
-      console.log("data",res.data);
     }
   }
 
@@ -45,7 +44,7 @@ const EditStatusModal = ({ param, open, onCancel, onOk }) => {
 
       });
     }
-  }, [data]);
+  }, [data, form]);
 
   const handleOk = async () => {
     setLoading(true);
@@ -56,7 +55,6 @@ const EditStatusModal = ({ param, open, onCancel, onOk }) => {
         setLoading(false);
         return;
       }
-    console.log("values",values);
       const body = {
         id: data._id,
         status: values.prob_status,
@@ -64,7 +62,6 @@ const EditStatusModal = ({ param, open, onCancel, onOk }) => {
       };
   
       const res = await updateStatusProblem(body);
-      console.log("API Response:", res);
       if (res) {
         form.resetFields();
         onOk(body);

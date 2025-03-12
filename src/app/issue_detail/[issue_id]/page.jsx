@@ -4,12 +4,13 @@ import React, { useEffect ,useState} from "react";
 import Link from "next/link";
 import Swal from "sweetalert2";
 import Navbar from "../../components/navbar";
-import { getProblemById } from "../../service/issue.service";
+import { getProblemById, updateStatusClose ,cancelProblem} from "../../service/issue.service";
 import { formatDateInThai } from "../../utils/date";
 import { statusColors} from "../../utils/common";
-
+import { useRouter } from "next/navigation";
 
 function IssueDetailPage( {params}) {
+  const router = useRouter(); 
   const [problem, setProblem] = useState([]);
   const { issue_id } = params; 
 
@@ -24,32 +25,87 @@ function IssueDetailPage( {params}) {
     };
     fetchProblemById();
   }, [params, issue_id]);
-  const handleConfirm = (async) => {
-    try {
-      Swal.fire({
-        icon: "question", // ประเภทของ alert
-        title: "แจ้งเตือน", // หัวข้อของ error
-        text: "กรุณากดปุ่มยืนยันเพื่อจบงาน", // ข้อความใน error
-        showCancelButton: true, // แสดงปุ่มยกเลิก
-        confirmButtonText: "จบงาน", // ข้อความบนปุ่มยืนยัน
-        cancelButtonText: "ยกเลิก", // ข้อความบนปุ่มยกเลิก
-        confirmButtonColor: "#3085d6", // สีของปุ่มยืนยัน
-        cancelButtonColor: "#d33", // สีของปุ่มยกเลิก
-      });
-    } catch (error) {
-      console.error("Error", error);
-    }
-  };
 
-  const handleCancel = (async) => {
+
+const handleConfirm = async () => {
+  try {
+    const result = await Swal.fire({
+      icon: "question",
+      title: "แจ้งเตือน",
+      text: "กรุณากดปุ่มยืนยันเพื่อจบงาน",
+      showCancelButton: true,
+      confirmButtonText: "จบงาน",
+      cancelButtonText: "ยกเลิก",
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+    });
+
+    if (result.isConfirmed) {
+      const body = {
+        id: issue_id,
+        name: localStorage.getItem("firstname"),
+      };
+      const res = await updateStatusClose(body);
+
+      if (res && res.res_code === "000") {
+        Swal.fire({
+          icon: "success",
+          title: "สำเร็จ!",
+          text: "งานถูกปิดเรียบร้อยแล้ว",
+        });
+        router.push("/issue_history");
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "เกิดข้อผิดพลาด",
+          text: res.res_msg || "ไม่สามารถปิดงานได้",
+        });
+      }
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    Swal.fire({
+      icon: "error",
+      title: "เกิดข้อผิดพลาด",
+      text: "กรุณาลองใหม่อีกครั้ง",
+    });
+  }
+};
+
+
+  const handleCancel = async () => {
     try {
-      Swal.fire({
+      const result = await Swal.fire({
         icon: "question",
         title: "แจ้งเตือน",
         text: "กรุณากดปุ่มยืนยันเพื่อยกเลิก",
         confirmButtonText: "ยืนยัน",
+        showCancelButton: true,
+        cancelButtonText: "ยกเลิก",
         confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
       });
+
+
+      if (result.isConfirmed) {
+        const res = await cancelProblem(issue_id);
+
+        if (res && res.res_code === "000") {
+          Swal.fire({
+            icon: "success",
+            title: "สำเร็จ!",
+            text: "งานถูกปิดเรียบร้อยแล้ว",
+          });
+          router.push("/all_issue");
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "เกิดข้อผิดพลาด",
+            text: res.res_msg || "ไม่สามารถปิดงานได้",
+          });
+        }
+      }
+
     } catch (error) {
       console.error("Error", error);
     }
@@ -102,23 +158,33 @@ function IssueDetailPage( {params}) {
               </div>
 
             {/* <Link href=""> */}
+
         <button
           type="submit"
           onClick={handleConfirm}
-          className="w-full bg-[#5ABCF5] text-white mt-4 py-2 rounded-md hover:bg-[#5a90f5]"
+          className={`w-full text-white mt-4 py-2 rounded-md transition ${
+            problem?.prob_status === "ซ่อมสำเร็จ รอการยืนยัน"
+              ? "bg-[#5ABCF5] hover:bg-[#5a90f5]"
+              : "bg-gray-400 cursor-not-allowed"
+          }`}
+          disabled = {problem?.prob_status !== "ซ่อมสำเร็จ รอการยืนยัน"}
         >
           จบงาน
         </button>
         {/* </Link> */}
-        <Link href="">
-          <button
-            type="submit"
-            onClick={handleCancel}
-            className="w-full bg-red-600 text-white mt-4 py-2 rounded-md hover:bg-red-800"
-          >
-            ยกเลิกงาน
-          </button>
-        </Link>
+        <button
+          type="submit"
+          onClick={handleCancel}
+          className={`w-full text-white mt-4 py-2 rounded-md transition ${
+            problem?.prob_status === "รอรับเรื่อง"
+              ? "bg-red-600 hover:bg-red-800"
+              : "bg-gray-400 cursor-not-allowed"
+          }`}
+          disabled={problem?.prob_status !== "รอรับเรื่อง"} 
+        >
+          ยกเลิกงาน
+        </button>
+
       </div>
     </div>
   );

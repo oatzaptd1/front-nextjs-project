@@ -52,3 +52,21 @@ export async function getProblemHistoryBySiteId(site_id) {
     return error;
   }
 }
+
+export async function updateStatusClose(body) {
+  try {
+    const result = await axios.post(`/project-v0/problem/update-status-close`,body);
+    return result.data;
+  } catch (error) {
+    return error;
+  }
+}
+
+export async function cancelProblem(id:string) {
+  try {
+    const result = await axios.delete(`/project-v0/problem/cancel-problem/${id}`);
+    return result.data;
+  } catch (error) {
+    return error;
+  }
+}

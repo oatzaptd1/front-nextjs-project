@@ -113,3 +113,17 @@ export async function uploadFile(files){
     return error;
   }
 }
+
+export async function getStatus(limit: string, page: number) {
+  try {
+    const result = await axios.get(`/project-v0/problem/get-status`, {
+      params: {
+        limit: limit,
+        page: page
+      }
+    });
+    return result.data;
+  } catch (error) {
+    return error;
+  }
+}
