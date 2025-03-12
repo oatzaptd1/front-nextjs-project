@@ -191,8 +191,7 @@ function AllReport() {
               <div className="flex flex-col relative w-1/6">
                 <span className="text-[#50B0E9]">วันที่สิ้นสุด</span>
                 <DatePicker
-                   selected={endDate} 
-                  placeholderText="วว/ดด/ปปปป"
+                  selected={endDate}
                   onChange={(date) => setEndDate(date)}
                   dateFormat="dd/MM/yyyy"
                   locale={"th"}
