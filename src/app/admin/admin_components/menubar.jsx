@@ -22,7 +22,12 @@ function Menubar() {
           label: "แจ้งปัญหา",
           href: "/admin/all_report",
         },
+        {
+          label: "รายงาน",
+          href: "/admin/dashboard",
+        },
       ],
+   
     },
     {
       title: "Other",
