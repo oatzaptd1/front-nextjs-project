@@ -114,12 +114,13 @@ export async function uploadFile(files){
   }
 }
 
-export async function getStatus(limit: string, page: number) {
+export async function getStatus(limit: number, page: number, site_id: string) {
   try {
     const result = await axios.get(`/project-v0/problem/get-status`, {
       params: {
         limit: limit,
-        page: page
+        page: page,
+        site_id: site_id
       }
     });
     return result.data;

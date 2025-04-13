@@ -32,7 +32,8 @@ useEffect(() => {
 useEffect(() => {
   const pollingStatus = async () => {
     try {
-      const res = await getStatus();
+      const site_id = localStorage.getItem("site_id");
+      const res = await getStatus(null,null,site_id);
       if (res && res.res_code === "000") {
         setAllProb((prevIssues) => {
           if (!Array.isArray(prevIssues)) return []; 

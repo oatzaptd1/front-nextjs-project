@@ -17,11 +17,34 @@ function CountHistoryPage() {
   const [shelfProducts, setShelfProducts] = useState([]);
   const [countProduct, setCountProduct] = useState([]);
 
+  const [currentDateTime, setCurrentDateTime] = useState("");
+
+
   const formattedRound = formatRoundInThai(totalCount.round);
 
   const handleChange = (e) => {
     setSelectedOption(e.target.value);
   };
+
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      const formatted = now.toLocaleString("th-TH", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+      });
+      setCurrentDateTime(formatted);
+    };
+
+    updateTime();
+    const interval = setInterval(updateTime, 1000); // อัปเดตทุกวินาที
+
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     const fetchTotalCountAndCounted = async () => {
@@ -65,6 +88,9 @@ function CountHistoryPage() {
         </p>
         <p className="text-lg">{formattedRound}</p>
 
+        <div>
+          <p>วันและเวลา : {currentDateTime}</p>
+        </div>
         <div className="w-[300px] mt-4 bg-white border shadow p-3 rounded-md">
           <FormControl fullWidth variant="outlined">
             <InputLabel>เลือกชั้นวาง</InputLabel>
