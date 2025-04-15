@@ -9,7 +9,7 @@ function Navigation(props) {
 
   return (
     <div className="">
-      <div className="fixed bottom-0 h-20 w-full bg-[#5ABCF5] rounded-tr-2xl rounded-tl-2xl flex justify-between items-center text-white">
+      <div className="fixed bottom-0 h-12 w-full bg-[#5ABCF5] rounded-tr-2xl rounded-tl-2xl flex justify-between items-center text-white">
         <div className={`flex-1 text-center py-7 ${color1}`}>
           <Link href={page1}>
             <p>{navi1}</p>

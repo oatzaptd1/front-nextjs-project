@@ -47,31 +47,75 @@ function AddIssuePage() {
     }
 };
 
-  const uploadFilesAsync = async (filesToUpload) => {
-    setLoadingImage(true);
-    try {
-      const formData = new FormData();
+const resizeImage = (file, maxSize = 1024) => {
+  return new Promise((resolve) => {
+    const img = new Image();
+    const reader = new FileReader();
 
-      filesToUpload.forEach((file) => {
-        formData.append("files", file); 
-      });
+    reader.onload = (e) => {
+      img.src = e.target.result;
+    };
 
-      const res = await uploadFile(formData); 
-      
-      if (Array.isArray(res.data)) {
-          const newImageUrls = res.data.map((item) => item.url);
-      
-          setImage((prevImages) => [...prevImages, ...newImageUrls]); 
+    img.onload = () => {
+      let width = img.width;
+      let height = img.height;
+
+      if (width > height) {
+        if (width > maxSize) {
+          height = (height * maxSize) / width;
+          width = maxSize;
+        }
       } else {
-          console.error("Invalid response format:", res.data);
+        if (height > maxSize) {
+          width = (width * maxSize) / height;
+          height = maxSize;
+        }
       }
-      
-    } catch (error) {
-      console.error("Upload failed:", error);
-    } finally {
-      setLoadingImage(false); 
+
+      const canvas = document.createElement("canvas");
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0, width, height);
+
+      canvas.toBlob((blob) => {
+        const resizedFile = new File([blob], file.name, {
+          type: file.type,
+          lastModified: Date.now(),
+        });
+        resolve(resizedFile);
+      }, file.type);
+    };
+
+    reader.readAsDataURL(file);
+  });
+};
+
+
+const uploadFilesAsync = async (filesToUpload) => {
+  setLoadingImage(true);
+  try {
+    const formData = new FormData();
+
+    for (const file of filesToUpload) {
+      const resizedFile = await resizeImage(file, 1024); 
+      formData.append("files", resizedFile);
     }
-  };
+
+    const res = await uploadFile(formData);
+
+    if (Array.isArray(res.data)) {
+      const newImageUrls = res.data.map((item) => item.url);
+      setImage((prevImages) => [...prevImages, ...newImageUrls]);
+    } else {
+      console.error("Invalid response format:", res.data);
+    }
+  } catch (error) {
+    console.error("Upload failed:", error);
+  } finally {
+    setLoadingImage(false);
+  }
+};
 
   useEffect(() => {
     return () => {

@@ -10,6 +10,8 @@ import { getStatus } from "../service/api.service";
 import { Card } from "antd";
 import { FloatButton } from "antd";
 import { PlusCircleOutlined } from "@ant-design/icons";
+import { formatDateInThai } from "../utils/date";
+
 function AllIssuePage() {
 const router = useRouter();
 const [allProb, setAllProb] = useState([]);
@@ -100,7 +102,7 @@ const onRowClick = (issue_id) => {
                         {prob.prob_status}
                       </span>
                     </b>
-                    <p>วันที่แจ้ง : {prob.create_date}</p>
+                    <p>วันและเวลาที่แจ้ง : {formatDateInThai(prob.create_date)}</p>
                   </Card>
                 </div>
               ))}

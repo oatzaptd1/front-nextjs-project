@@ -8,6 +8,7 @@ import { getProblemById, updateStatusClose ,cancelProblem} from "../../service/i
 import { formatDateInThai } from "../../utils/date";
 import { statusColors} from "../../utils/common";
 import { useRouter } from "next/navigation";
+import { Image } from "antd";
 
 function IssueDetailPage( {params}) {
   const router = useRouter(); 
@@ -136,7 +137,7 @@ const handleConfirm = async () => {
            <div className="px-4 flex items-center space-x-4">
               {Array.isArray(problem.prob_image) && problem.prob_image.length > 0 ? (
                 problem.prob_image.map((image, index) => (
-                  <img
+                  <Image 
                     key={index}
                     src={image}
                     alt={`Uploaded image ${index + 1}`}

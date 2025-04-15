@@ -4,8 +4,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Sidebar from "../components/sidebar";
 import Swal from "sweetalert2";
-
 import { checkInspectionRound } from "../service/api.service";
+
 function MenuPage() {
   const router = useRouter();
 
@@ -26,6 +26,28 @@ function MenuPage() {
     }
   };
 
+  const [currentDateTime, setCurrentDateTime] = useState("");
+  
+    useEffect(() => {
+        const updateTime = () => {
+          const now = new Date();
+          const formatted = now.toLocaleString("th-TH", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+          });
+          setCurrentDateTime(formatted);
+        };
+    
+        updateTime();
+        const interval = setInterval(updateTime, 1000); // อัปเดตทุกวินาที
+    
+        return () => clearInterval(interval);
+      }, []);
+
   return (
     <div>
       <nav className="bg-[#5ABCF5] text-white p-8">
@@ -34,6 +56,10 @@ function MenuPage() {
           <div className="flex justify-center items-center text-lg">
             เลือกเมนู
           </div>
+        </div>
+        <div className="absolute top-4 right-3 text-sm text-right">
+          <p>วันที่ : {currentDateTime.split(" ")[0]} {currentDateTime.split(" ")[1]} {currentDateTime.split(" ")[2]}</p>
+          <p>เวลา : {currentDateTime.split(" ")[4]}</p>
         </div>
       </nav>
 

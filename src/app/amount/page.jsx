@@ -96,7 +96,7 @@ function InputPage() {
     <div>
       <Navbar page="/menu" title="นับสินค้า" />
       <div className="flex flex-col items-center justify-center">
-        <div className="w-[350px] mt-10 bg-white border shadow p-4 rounded-md">
+        <div className="w-[350px] mt-4 bg-white border shadow p-4 rounded-md">
           <form action="">
             <FormControl fullWidth variant="outlined">
               <InputLabel>เลือกชั้นวาง</InputLabel>
@@ -127,23 +127,6 @@ function InputPage() {
               </Select>
             </FormControl>
 
-            {/* <select
-              value={selectedOption}
-              onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded-xl text-lg focus:border-blue-500 "
-            >
-              <option value="">กรุณาเลือกชั้นวาง</option>
-              {shelfProducts.length > 0 ? (
-                shelfProducts.map((shelfProduct, index) => (
-                  <option key={index} value={shelfProduct}>
-                    ชั้นวาง {shelfProduct}
-                  </option>
-                ))
-              ) : (
-                <option disabled>ไม่มีข้อมูลชั้นวาง</option>
-              )}
-            </select> */}
-
             <div className="relative">
               <input
                 className="w-full p-2 border border-gray-300 my-3 rounded-xl text-lg focus:border-blue-500"
@@ -167,7 +150,7 @@ function InputPage() {
             </button>
 
             <div className="relative">
-              <div className="overflow-y-auto max-h-80 rounded-lg mt-3">
+              <div className="overflow-y-auto max-h-60 rounded-lg mt-3">
                 <table className="w-full border-collapse text-center">
                   <thead className="bg-gray-200 sticky top-0">
                     <tr>
