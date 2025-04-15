@@ -30,10 +30,11 @@ export function removeLocalStorageItem(key) {
   localStorage.removeItem(key);
 }
 export const statusColors = {
-  "รอรับเรื่อง": "text-gray-500",
-  "รับเรื่องแล้ว": "text-blue-500",
+  "รอรับเรื่อง": "text-blue-500",
+  "รับเรื่องแล้ว": "text-green-500",
   "ส่งช่างไปแล้ว": "text-yellow-500",
   "ซ่อมสำเร็จแล้วรอการยืนยัน": "text-orange-500",
+  "ซ่อมสำเร็จ รอการยืนยัน": "text-orange-500",
   "ยืนยันการซ่อมสำเร็จ": "text-green-500",
   "ยกเลิก": "text-red-500",
   "ไม่มีสถานะ": "text-gray-400",

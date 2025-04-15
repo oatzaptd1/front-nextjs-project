@@ -113,3 +113,29 @@ export async function uploadFile(files){
     return error;
   }
 }
+
+export async function getStatus(limit: number, page: number, site_id: string) {
+  try {
+    const result = await axios.get(`/project-v0/problem/get-status`, {
+      params: {
+        limit: limit,
+        page: page,
+        site_id: site_id
+      }
+    });
+    return result.data;
+  } catch (error) {
+    return error;
+  }
+}
+
+export async function getDashboard(date: string) {
+  try {
+    const result = await axios.post(`/project-v0/problem/get-dashboard-problem`,{
+      date: date,
+    });
+    return result.data;
+  } catch (error) {
+    return error;
+  }
+}

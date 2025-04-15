@@ -31,7 +31,11 @@ const CountItemPage = ({ params, searchParams }) => {
       try {
         const res = await getItemDetail(body);
         if (res.res_code === "E101") {
-          alert(res.res_msg);
+          Swal.fire({
+            icon: "error",
+            title: "ไม่พบข้อมูล",
+            text: res.res_msg,
+          });
           router.push("/amount");
         }
         if (res && res.data) {
@@ -83,6 +87,9 @@ const CountItemPage = ({ params, searchParams }) => {
   return (
     <div>
       <Navbar page = "/amount" title = "นับสินค้า"/>
+      <div className="flex justify-center items-center mt-4 text-red-500">
+        {productDetail.is_counted ? 'สินค้านี้มีการนับไปแล้ว' : ''}
+      </div>
       <div className="flex flex-col justify-center items-center mt-8 p-4 bg-white border rounded-md shadow-md max-w-md mx-auto">
         
           <div className="flex items-center space-x-4">

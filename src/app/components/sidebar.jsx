@@ -61,7 +61,7 @@ function Sidebar() {
       </span>
 
       <div
-        className={`fixed flex flex-col top-0 bottom-0 lg:left-0 left-0 p-2 w-[300px] overflow-y-auto bg-white transform ${
+        className={`fixed flex flex-col top-0 bottom-0 lg:left-0 left-0 p-2 w-[300px] overflow-y-auto bg-[#F7F8FA]  transform ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         } transition-transform duration-300`}
       >

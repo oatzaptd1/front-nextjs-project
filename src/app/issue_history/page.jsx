@@ -1,10 +1,11 @@
 "use client";
-import React, { useEffect,useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../components/navbar";
 import Navigation from "../components/navigation";
-import { getLocalStorageItem ,statusColors} from "../utils/common";
+import { getLocalStorageItem, statusColors } from "../utils/common";
 import { getProblemHistoryBySiteId } from "../service/issue.service";
 import { useRouter } from "next/navigation";
+import { Card} from "antd";
 
 function IssueHistoryPage() {
   const router = useRouter();
@@ -17,42 +18,61 @@ function IssueHistoryPage() {
           console.warn("Site ID not found in localStorage");
           return;
         }
-  
+
         const res = await getProblemHistoryBySiteId(site_id);
         setProbHistory(res.data);
-        
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
-  
-    fetchData(); 
-  }, []); 
-const onRowClick = (issue_id) => {
-  router.push(`/issue_detail/${issue_id}`);
-}
+
+    fetchData();
+  }, []);
+  const onRowClick = (issue_id) => {
+    router.push(`/issue_detail/${issue_id}`);
+  };
 
   return (
     <div>
       <Navbar page="/menu" title="ประวัติการแจ้งปัญหา" />
-    
-        {Array.isArray(probHistory) && probHistory.map((prob) => (
-      <div
-        key={prob._id} 
-        className="mx-auto mt-8 p-4 bg-white border shadow-md items-start rounded-md w-64"
-        onClick = {() => onRowClick(prob._id)}
-      >
-        <p>เรื่อง: {prob.prob_name || "-"}</p>
-        <p>อุปกรณ์: {prob.prob_item_name || "-"}</p>
-        <div className="flex">
-        <p>สถานะ : </p>
-        <p className={`font-bold ${statusColors[prob.prob_status] || "text-gray-500"} pl-1`}>
-          {prob.prob_status}
-        </p>
-        </div>
-        
+
+      <div className="flex justify-center mt-8">
+        <Card
+          style={{ width: "90%", maxWidth: "400px", overflow: "hidden" }}
+          className="shadow-lg border"
+        >
+          <div className="max-h-[500px] overflow-y-auto p-2">
+            {Array.isArray(probHistory) &&
+              probHistory.map((prob) => (
+                <div
+                  key={prob._id}
+                  className="mb-4 cursor-pointer"
+                  onClick={() => onRowClick(prob._id)}
+                >
+                  <Card
+                    hoverable
+                    title={`เรื่อง : ${prob.prob_name || "-"}`}
+                    style={{ border: "1px solid #ccc" }}
+                    headStyle={{ 
+                      borderBottom: "1px solid #ccc", // ทำให้เส้นแบ่งชัดขึ้น 
+                    }}
+                  >
+                    <p>อุปกรณ์ : {prob.prob_item_name || "-"}</p>
+                    <p>สถานะ : <span
+                      className={`font-bold ${
+                        statusColors[prob.prob_status] || "text-gray-500"
+                      } pl-1`}
+                    >
+                      {prob.prob_status}
+                    </span></p>
+                    
+                  </Card>
+                </div>
+              ))}
+          </div>
+        </Card>
       </div>
-    ))}
+
       <Navigation
         navi1="แจ้งปัญหา"
         navi2="ประวัติการแจ้งปัญหา"

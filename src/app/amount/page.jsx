@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { getShelfProducts, getItemByShelf } from "../service/api.service";
 import QrBarcodeScanner from "react-qr-barcode-scanner";
 import { Select, MenuItem, FormControl, InputLabel } from "@mui/material";
+import Swal from "sweetalert2";
 
 function InputPage() {
   const router = useRouter();
@@ -70,7 +71,11 @@ function InputPage() {
         `/count/${item_id}?shelf=${selectedOption}&barcode=${productCode}`
       );
     } else {
-      alert("กรุณาเลือกชั้นวางและใส่รหัสสินค้า");
+      Swal.fire({
+        icon: "warning",
+        title: "แจ้งเตือน",
+        text: "กรุณาเลือกชั้นวางและใส่รหัสสินค้า",
+      })
     }
   };
 
