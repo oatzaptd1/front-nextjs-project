@@ -128,3 +128,14 @@ export async function getStatus(limit: number, page: number, site_id: string) {
     return error;
   }
 }
+
+export async function getDashboard(date: string) {
+  try {
+    const result = await axios.post(`/project-v0/problem/get-dashboard-problem`,{
+      date: date,
+    });
+    return result.data;
+  } catch (error) {
+    return error;
+  }
+}
