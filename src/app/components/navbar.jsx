@@ -38,17 +38,23 @@ function Navbar(props) {
 
   return (
     <div>
-      <nav className="bg-[#5ABCF5] text-lg text-white p-8 relative">
+      <nav className="bg-[#5ABCF5] text-lg text-white p-6 relative">
         <div className="container mx-auto flex justify-center relative">
           <div className="text-center">{title}</div>
         </div>
 
-        <div className="absolute top-4 right-3 text-sm">
+        {/* <div className="absolute top-4 right-3 text-sm">
           <p>วันที่ : {currentDateTime}</p>
+        </div> */}
+
+        <div className="absolute top-4 right-3 text-sm text-right">
+          <p>วันที่ : {currentDateTime.split(" ")[0]} {currentDateTime.split(" ")[1]} {currentDateTime.split(" ")[2]}</p>
+          <p>เวลา : {currentDateTime.split(" ")[4]}</p>
         </div>
 
+
         <div
-            className="absolute text-white text-4xl top-5 left-5 cursor-pointer"
+            className="absolute text-white text-4xl top-3 left-5 cursor-pointer"
             onClick={() => goToPage(page)} 
           >
             <svg

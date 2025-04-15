@@ -25,26 +25,6 @@ function CountHistoryPage() {
   };
 
   useEffect(() => {
-    const updateTime = () => {
-      const now = new Date();
-      const formatted = now.toLocaleString("th-TH", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-      });
-      setCurrentDateTime(formatted);
-    };
-
-    updateTime();
-    const interval = setInterval(updateTime, 1000); // อัปเดตทุกวินาที
-
-    return () => clearInterval(interval);
-  }, []);
-
-  useEffect(() => {
     const fetchTotalCountAndCounted = async () => {
       const res = await getTotalCountAndCounted();
       if (res && res.data) {
@@ -83,16 +63,14 @@ function CountHistoryPage() {
   return (
     <div>
       <Navbar page="/menu" title="ประวัติการนับ" />
-      <div className="flex flex-col justify-center items-center mt-8 space-y-6">
+      <div className="flex flex-col justify-center items-center mt-4 space-y-2">
         
         <p className="text-lg">
           จำนวนสินค้าที่นับไปแล้ว : {totalCount.totalCountCounted}
         </p>
+
         <p className="text-lg">{formattedRound}</p>
 
-        <div>
-          <p>วันและเวลา : {currentDateTime}</p>
-        </div>
         <div className="w-[300px] mt-4 bg-white border shadow p-3 rounded-md">
           <FormControl fullWidth variant="outlined">
             <InputLabel>เลือกชั้นวาง</InputLabel>
@@ -123,23 +101,6 @@ function CountHistoryPage() {
               )}
             </Select>
           </FormControl>
-
-          {/* <select
-            value={selectedOption}
-            onChange={handleChange}
-            className="w-full p-3 border border-gray-300 rounded-xl text-lg focus:border-blue-500"
-          >
-            <option value="">ทั้งหมด</option>
-            {shelfProducts.length > 0 ? (
-              shelfProducts.map((shelfProduct, index) => (
-                <option key={index} value={shelfProduct}>
-                  ชั้นวาง {shelfProduct}
-                </option>
-              ))
-            ) : (
-              <option disabled>ไม่มีข้อมูลชั้นวาง</option>
-            )}
-          </select> */}
 
         <div className="overflow-y-auto max-h-80 mt-6 space-y-4">
           {countProduct.length > 0 ? (

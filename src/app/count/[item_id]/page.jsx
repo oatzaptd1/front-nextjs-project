@@ -111,6 +111,8 @@ const CountItemPage = ({ params, searchParams }) => {
         
         <input
           type="text"
+          inputMode="numeric"
+          
           className="flex w-60 border border-gray-500 p-3 my-2 rounded-xl mb-4 text-center"
           value={itemQty}
           // onChange={(e) => setItemQty(e.target.value)}
