@@ -36,12 +36,12 @@ function IssueHistoryPage() {
     <div>
       <Navbar page="/menu" title="ประวัติการแจ้งปัญหา" />
 
-      <div className="flex justify-center mt-8">
+      <div className="flex justify-center mt-4">
         <Card
           style={{ width: "90%", maxWidth: "400px", overflow: "hidden" }}
           className="shadow-lg border"
         >
-          <div className="max-h-[500px] overflow-y-auto p-2">
+          <div className="max-h-[420px] overflow-y-auto p-2">
             {Array.isArray(probHistory) &&
               probHistory.map((prob) => (
                 <div

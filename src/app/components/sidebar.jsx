@@ -42,7 +42,7 @@ function Sidebar() {
   return (
     <div>
       <span
-        className="absolute text-white text-4xl top-5 left-4 cursor-pointer"
+        className="absolute text-white text-4xl top-3 left-4 cursor-pointer"
         onClick={toggleSidebar}
       >
         <svg

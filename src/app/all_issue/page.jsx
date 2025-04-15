@@ -70,12 +70,12 @@ const onRowClick = (issue_id) => {
     <div className="flex flex-col h-screen">
     <Navbar page="/menu" title="แจ้งปัญหา" />
   
-    <div className="flex justify-center mt-8">
+    <div className="flex justify-center mt-4">
         <Card
           style={{ width: "90%", maxWidth: "400px", overflow: "hidden" }}
           className="shadow-lg border"
         >
-          <div className="max-h-[500px] overflow-y-auto p-2">
+          <div className="max-h-[420px] overflow-y-auto p-2">
             {Array.isArray(allProb) &&
               allProb.map((prob) => (
                 <div

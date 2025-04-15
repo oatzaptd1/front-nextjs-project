@@ -50,7 +50,7 @@ function MenuPage() {
 
   return (
     <div>
-      <nav className="bg-[#5ABCF5] text-white p-8">
+      <nav className="bg-[#5ABCF5] text-white p-6">
         <div className="container mx-auto">
           <Sidebar />
           <div className="flex justify-center items-center text-lg">
