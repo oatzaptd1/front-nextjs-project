@@ -37,31 +37,7 @@ function CountHistoryPage() {
       });
       setCurrentDateTime(formatted);
     };
-    fetchTotalCountAndCounted();
-  }, []);
-  useEffect(() => {
-    const fetchShelfProducts = async () => {
-      try {
-        const res = await getShelfProducts();
-        setShelfProducts(res.data);
-      } catch (error) {
-        console.error("Error fetching shelf products", error);
-      }
-    };
 
-    fetchShelfProducts();
-  }, []);
-
-  useEffect(() => {
-    const getCountProductHistory = async () => {
-      const filters_item_position = selectedOption;
-
-      const res = await getCountProduct(filters_item_position);
-      setCountProduct(res.data);
-    };
-    getCountProductHistory();
-  }, [selectedOption]);
-{}
     updateTime();
     const interval = setInterval(updateTime, 1000); // อัปเดตทุกวินาที
 
@@ -214,6 +190,6 @@ function CountHistoryPage() {
       />
     </div>
   );
-
+}
 
 export default CountHistoryPage;
